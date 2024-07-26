@@ -1,0 +1,15 @@
+.page {
+	background-color: #f3f3f3;
+	/* width: 1440px;
+	height: 822px;
+	top: 634px;
+	left: -8837px;
+	gap: 0px;
+	opacity: 0px; */
+}
+
+.page__content {
+	max-width: 1360px;
+	margin: 0 auto;
+    padding: 0 20px;
+}
