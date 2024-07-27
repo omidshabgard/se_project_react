@@ -55,7 +55,7 @@ function App() {
 				activeModal={activeModal}
 				onClose={closeActiveModal}
 			>
-				<lable htmlFor='name' className='modal__lable'>
+				<label htmlFor='name' className='modal__label'>
 					Name{' '}
 					<input
 						type='text'
@@ -63,8 +63,8 @@ function App() {
 						id='name'
 						placeholder='Name'
 					/>
-				</lable>
-				<lable htmlFor='imageURL' className='modal__lable'>
+				</label>
+				<label htmlFor='imageURL' className='modal__label'>
 					Image{' '}
 					<input
 						type='text'
@@ -72,7 +72,7 @@ function App() {
 						id='imageURL'
 						placeholder='Image URL'
 					/>
-				</lable>
+				</label>
 				<fieldset className='modal__radio-buttons'>
 					<legend className='modal__legend'>
 						Select the weather type:

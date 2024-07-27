@@ -1,18 +1,19 @@
 export const getWeather = ({ latitude, longitude }, APIkey) => {
-	// return 
-	let fetchValue = fetch(
-		'https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=mperial&appid=${APIkey}'
-
-	).then((res) => {
+	return fetch(
+	  `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIkey}`
+	)
+	  .then((res) => {
 		if (res.ok) {
-			return res.json();
+		  return res.json();
 		} else {
-			return Promise.reject(`Error: ${res.status}`);
+		  throw new Error(`Error: ${res.status}`);
 		}
-	}); 
-	console.log(fetchValue);
-	return fetchValue;
-};
+	  })
+	  .catch((error) => {
+		console.error('There was an error fetching the weather data:', error);
+	  });
+  };
+  
 
 export const filterWeatherData = (data) => {
 	const result = {};
