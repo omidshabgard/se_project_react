@@ -1,7 +1,6 @@
 import './ModalWithForm.css';
 
 function ModalWithForm({ children, buttonText, title, activeModal, onClose }) {
-
 	return (
 		<div
 			className={`modal ${
@@ -16,7 +15,7 @@ function ModalWithForm({ children, buttonText, title, activeModal, onClose }) {
 					type='button'
 					className='modal__close'
 				>
-					CLOSE 
+					CLOSE
 				</button>
 
 				<form className='modal__form'>

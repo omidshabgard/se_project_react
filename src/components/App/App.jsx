@@ -1,12 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import ModalWithForm from '../ModalWithForm/ModalWithForm';
 import ItemModal from '../ItemModal/ItemModal';
+import { getWeather, filterWeatherData } from '../../utils/weatherApi';
+import { coordinates, APIkey } from '../../utils/constants';
 
 function App() {
-	const [weatherData, setWeatherData] = useState({ type: 'cold' });
+	const [weatherData, setWeatherData] = useState({
+		type: '',
+		temp: { F: 999 },
+		city: '',
+	});
 	const [activeModal, setActiveModal] = useState('');
 	const [selectedCard, setSelectedCard] = useState({});
 
@@ -17,18 +23,37 @@ function App() {
 	const handleAddClick = () => {
 		setActiveModal('add-garment');
 	};
+	const closeActiveModal = () => {
+		setActiveModal('');
+	};
+
+	useEffect(() => {
+		getWeather(coordinates, APIkey)
+			.then((data) => {
+				const filterData = filterWeatherData(data);
+				console.log(filterData, 'filterData');
+				setWeatherData(filterData);
+			})
+			.catch(console.error);
+	}, []);
 
 	return (
 		<div className='page'>
 			<div className='page__content'>
-				<Header handleAddClick={handleAddClick} />
-				<Main weatherData={weatherData} />
+				<Header
+					handleAddClick={handleAddClick}
+					weatherData={weatherData}
+				/>
+				<Main
+					weatherData={weatherData}
+					handleCardClick={handleCardClick}
+				/>
 			</div>
 			<ModalWithForm
 				title='New garment'
 				buttonText='Add garment'
 				activeModal={activeModal}
-				onClose={setActiveModal}
+				onClose={closeActiveModal}
 			>
 				<lable htmlFor='name' className='modal__lable'>
 					Name{' '}
@@ -89,7 +114,11 @@ function App() {
 					</label>
 				</fieldset>
 			</ModalWithForm>
-			<ItemModal activeModal={activeModal} card={selectedCard} onClose={setActiveModal} />
+			<ItemModal
+				activeModal={activeModal}
+				card={selectedCard}
+				onClose={closeActiveModal}
+			/>
 		</div>
 	);
 }
