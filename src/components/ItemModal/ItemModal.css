@@ -1,0 +1,12 @@
+.modal__image{
+    object-fit: cover;
+    width: 100%;
+}
+.display_image_modal{
+    position: relative;
+}
+.itemModal_close{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
