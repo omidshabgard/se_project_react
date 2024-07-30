@@ -10,3 +10,39 @@
     right: 0;
     top: 0;
 }
+.preview_modal{
+    width: 498px;
+    border-radius: 16px;
+    padding: 0;
+}
+.preview_modal_close{
+    color: #FFFFFF;
+    height: 16px;
+    width: 16px;
+    border: none;
+    background-color: transparent;
+    top:24px;
+    right: 24px;
+}
+.modal__image{
+    border-radius: 16px 16px  0 0;
+}
+.modal__footer{
+    padding: 20px 20px 32px 32px;
+}
+.modal__footer h2,.modal__footer p{
+    margin: 0;
+}
+.modal__footer p{
+    font-family: 'Cabinet Grotesk', sans-serif;
+    color: #000000;
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 12px;
+}
+.modal__footer h2 {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    color: #000000;
+    font-size: 20px;
+    font-weight: 700;
+}

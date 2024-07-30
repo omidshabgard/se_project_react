@@ -1,11 +1,15 @@
 import "./ItemModal.css";
 function ItemModal({ activeModal, onClose, card }) {
   return (
-    <div className={`modal ${activeModal === "preview" && "modal_opened"}`}>
-      <div className="modal__content modal__content_type_image">
+    <div className={`modal ${activeModal === "preview" && "modal_opened"} `}>
+      <div className="modal__content modal__content_type_image preview_modal">
         <div className="display_image_modal">
-          <button onClick={onClose} type="button" className="modal__close itemModal_close">
-            CLOSE
+          <button
+            onClick={onClose}
+            type="button"
+            className="modal__close itemModal_close preview_modal_close"
+          >
+            X
           </button>
           <img src={card.link} alt="" className="modal__image" />
         </div>

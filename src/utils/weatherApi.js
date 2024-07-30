@@ -1,19 +1,21 @@
 export const getWeather = ({ latitude, longitude }, APIkey) => {
 	return fetch(
-	  `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIkey}`
+		`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIkey}`
 	)
-	  .then((res) => {
-		if (res.ok) {
-		  return res.json();
-		} else {
-		  throw new Error(`Error: ${res.status}`);
-		}
-	  })
-	  .catch((error) => {
-		console.error('There was an error fetching the weather data:', error);
-	  });
-  };
-  
+		.then((res) => {
+			if (res.ok) {
+				return res.json();
+			} else {
+				throw new Error(`Error: ${res.status}`);
+			}
+		})
+		.catch((error) => {
+			console.error(
+				'There was an error fetching the weather data:',
+				error
+			);
+		});
+};
 
 export const filterWeatherData = (data) => {
 	const result = {};

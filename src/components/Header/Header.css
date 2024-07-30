@@ -2,6 +2,7 @@
 	display: flex;
 	align-items: center;
 	padding: 32px 0 28px;
+	justify-content: space-between;
 }
 
 .header__logo {
@@ -10,31 +11,88 @@
 
 .header__date-and-location {
 	margin: 0;
+	font-family: 'Cabinet Grotesk', sans-serif;
+	color: #000000;
+	font-size: 20px;
+	font-weight: 700;
 }
 
 .header__add-clothes-btn {
 	margin: 0 20px 0 auto;
+	border: none;
+	font-family: 'Cabinet Grotesk', sans-serif;
+	color: #000000;
+	font-size: 20px;
+	font-weight: 700;
 }
 
 .header__user-container {
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	/* gap: 10px; */
 }
 
-.header__user-name {
+.header__username {
 	margin: 0;
+	font-family: 'Cabinet Grotesk', sans-serif;
+	color: #000000;
+	font-size: 20px;
+	font-weight: 700;
 }
 
-/* .header__avatar {
-	width: 40px;
-	height: 40px;
-	border-radius: 25%;
-    cursor: pointer;
-
+.header_menu_content,.header_logo_and_location{
+	display: flex;
+	align-items: center;
 }
-
-/* .header__avatar:hover {
-    background-color: brown;
-} */
+.mobile_view_menu{
+	display: none;
+}
+@media screen and (max-width: 627px) {
+	.submenu_close,.submenu{
+		display: block;
+		border: none;
+		background-color: transparent;
+	}
+	.mobile_view_menu{
+		display: block;
+	}
+	.header_menu_content{
+		display: none;
+	}
+	.mobile_menu{
+		position: absolute;
+		z-index: 2;
+		top: 18px;
+		left: 0;
+		right: 0;
+		min-width: 343px;
+		width: 95%;
+		background: #FFFFFF;
+		border-radius: 10px;
+		margin: 0 16px ;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding-bottom: 60px;
+	}
+	.header__add-clothes-btn{
+		margin:0
+	}
+	.submenu_close{
+		align-self: flex-end;
+		margin: 11px 11px 27px;
+		color: #000000;
+		width: 21px;
+	}
+	.mobileView__user-container{
+		display: flex;
+		align-items: center;
+		gap:12px;
+		margin-bottom: 24px;
+	}
+	.header__add-clothes-btn{
+		background-color: transparent;
+		align-self: center;
+	}
+}

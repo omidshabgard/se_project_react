@@ -3,19 +3,27 @@
 	position: relative;
 	display: flex;
 	justify-content: center;
+	border: 1px solid #0000004D;
+	border-radius: 19px;
+	margin: 20px 0;
 }
 
 .card__name {
 	position: absolute;
 	top: 15px;
 	background-color: white;
-	padding: 5px 10px;
+	padding: 2px 12px;
 	border-radius: 5px;
-	font-size: 1.1rem;
+	font-family: 'Cabinet Grotesk', sans-serif;
+	color: #00000099;
+	font-size: 16px;
+	font-weight: 700;
+	/* font-size: 1.1rem; */
 	width: auto;
 }
 .card__image {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	border-radius: 19px;
 }
