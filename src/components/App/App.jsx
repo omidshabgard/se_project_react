@@ -96,7 +96,7 @@ function App() {
 						className='modal__label modal__label_type_radio'
 					>
 						<input
-							id='cold'
+							id='hot'
 							type='radio'
 							name='weather'
 							className='modal__radio-input'
@@ -110,7 +110,7 @@ function App() {
 						className='modal__label modal__label_type_radio'
 					>
 						<input
-							id='cold'
+							id='warm'
 							type='radio'
 							name='weather'
 							className='modal__radio-input'
