@@ -38,6 +38,10 @@
 	color: #000000;
 	font-size: 20px;
 	font-weight: 700;
+	
+}
+.profile__link{
+	text-decoration: none;
 }
 
 .header_menu_content,.header_logo_and_location{

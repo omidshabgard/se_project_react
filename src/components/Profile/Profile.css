@@ -1,0 +1,16 @@
+.profile{
+    display: flex;
+    gap:116px
+}
+.profile__clothSection{
+    width: 1015px;
+}
+@media screen and (max-width: 627px) {
+    .profile{
+        flex-direction: column;
+    }
+    .profile__clothSection{
+        width: auto;
+    }
+
+}

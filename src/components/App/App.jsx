@@ -1,144 +1,120 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Header from '../Header/Header';
-import Main from '../Main/Main';
-import ModalWithForm from '../ModalWithForm/ModalWithForm';
-import ItemModal from '../ItemModal/ItemModal';
-import { getWeather, filterWeatherData } from '../../utils/weatherApi';
-import { coordinates, APIkey } from '../../utils/constants';
-import Footer from '../Footer/Footer';
-import reload from '../../assets/reload.svg';
+import Main from "../Main/MainContent";
+import ItemModal from "../ItemModal/ItemModal";
+import { getWeather, filterWeatherData } from "../../utils/weatherApi";
+import { coordinates, APIkey } from "../../utils/constants";
+import Footer from "../Footer/Footer";
+import reload from "../../assets/reload.svg";
+import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
+import AddItemModal from "../AddItemModal/AddItemModal";
+import { Routes, Route } from "react-router-dom";
+import Profile from "../Profile/Profile";
+import { getItems } from "../../utils/Api";
 
 function App() {
-	const [weatherData, setWeatherData] = useState({
-		type: '',
-		temp: { F: 999 },
-		city: '',
-	});
-	const [activeModal, setActiveModal] = useState('');
-	const [selectedCard, setSelectedCard] = useState({});
-	const [mobileView, setMobileView] = useState(false);
+  const [weatherData, setWeatherData] = useState({
+    type: "",
+    temp: { F: 999, C: 0 },
+    city: "",
+  });
+  const [activeModal, setActiveModal] = useState("");
+  const [selectedCard, setSelectedCard] = useState({});
+  const [mobileView, setMobileView] = useState(false);
+  const [clothItems, setClothingItems] = useState([]);
+  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
 
-	const handleCardClick = (card) => {
-		setActiveModal('preview');
-		setSelectedCard(card);
-	};
-	const handleAddClick = () => {
-		setActiveModal('add-garment');
-		setMobileView(false);
-	};
-	const closeActiveModal = () => {
-		setActiveModal('');
-	};
+  useEffect(() => {
+    getWeather(coordinates, APIkey)
+      .then((data) => {
+        const filterData = filterWeatherData(data);
+        setWeatherData(filterData);
+      })
+      .catch(console.error);
+  }, []);
+  useEffect(() => {
+    getItems()
+      .then((data) => {console.log("DATA",data);
+        setClothingItems(data)})
+      // .catch(console.log("Error"));
+  }, []);
 
-	useEffect(() => {
-		getWeather(coordinates, APIkey)
-			.then((data) => {
-				const filterData = filterWeatherData(data);
-				setWeatherData(filterData);
-			})
-			.catch(console.error);
-	}, []);
+  const handleCardClick = (card) => {
+    setActiveModal("preview");
+    setSelectedCard(card);
+  };
+  const handleAddClick = () => {
+    setActiveModal("add-garment");
+    setMobileView(false);
+  };
+  const closeActiveModal = () => {
+    if (activeModal) setActiveModal("");
+  };
 
-	return (
-		<div className='page'>
-			<div className='page__content'>
-				<div>
-					<Header
-						handleAddClick={handleAddClick}
-						weatherData={weatherData}
-						mobileView={mobileView}
-						setMobileView={setMobileView}
-					/>
-					<Main
-						weatherData={weatherData}
-						handleCardClick={handleCardClick}
-					>
-						<button className='random_mobileView'>
-							<img src={reload} alt='reload' />
-							<div>Randomize</div>
-						</button>
-					</Main>
-				</div>
-				<Footer />
-			</div>
-			<ModalWithForm
-				title='New garment'
-				buttonText='Add garment'
-				activeModal={activeModal}
-				onClose={closeActiveModal}
-				isOpen={activeModal === 'add-garment'}
-			>
-				<label htmlFor='name' className='modal__label'>
-					Name{' '}
-					<input
-						type='text'
-						className='modal__input'
-						id='name'
-						placeholder='Name'
-					/>
-				</label>
-				<label htmlFor='imageURL' className='modal__label'>
-					Image{' '}
-					<input
-						type='text'
-						className='modal__input'
-						id='imageURL'
-						placeholder='Image URL'
-					/>
-				</label>
-				<fieldset className='modal__radio-buttons'>
-					<legend className='modal__legend'>
-						Select the weather type:
-					</legend>
-					<label
-						htmlFor='hot'
-						className='modal__label modal__label_type_radio'
-					>
-						<input
-							id='hot'
-							type='radio'
-							name='weather'
-							className='modal__radio-input'
-							defaultChecked
-						/>
-						Hot
-					</label>
+  const handleToggleSwitchChange = () => {
+    if (currentTemperatureUnit === "C") setCurrentTemperatureUnit("F");
+    if (currentTemperatureUnit === "F") setCurrentTemperatureUnit("C");
+  };
+  const handleAddItem = (e) => {
+    closeActiveModal();
+  };
 
-					<label
-						htmlFor='warm'
-						className='modal__label modal__label_type_radio'
-					>
-						<input
-							id='warm'
-							type='radio'
-							name='weather'
-							className='modal__radio-input'
-						/>
-						Warm
-					</label>
-
-					<label
-						htmlFor='cold'
-						className='modal__label modal__label_type_radio'
-					>
-						<input
-							id='cold'
-							type='radio'
-							name='weather'
-							className='modal__radio-input'
-						/>
-						Cold
-					</label>
-				</fieldset>
-			</ModalWithForm>
-			<ItemModal
-				activeModal={activeModal}
-				card={selectedCard}
-				onClose={closeActiveModal}
-			/>
-		</div>
-	);
+  return (
+    <>
+      <CurrentTemperatureUnitContext.Provider
+        value={{
+          currentTemperatureUnit,
+          handleToggleSwitchChange,
+          weatherData,
+          handleCardClick,
+          clothItems,
+        }}
+      >
+        <div className="page">
+          <div className="page__content">
+            <div>
+              <Header
+                handleAddClick={handleAddClick}
+                weatherData={weatherData}
+                mobileView={mobileView}
+                setMobileView={setMobileView}
+              />
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <Main
+                      weatherData={weatherData}
+                      handleCardClick={handleCardClick}
+                    >
+                      <button className="random_mobileView">
+                        <img src={reload} alt="reload" />
+                        <div>Randomize</div>
+                      </button>
+                    </Main>
+                  }
+                />
+                <Route path="/profile" element={<Profile />} />
+              </Routes>
+            </div>
+            <Footer />
+          </div>
+          <AddItemModal
+            activeModal={activeModal}
+            closeActiveModal={closeActiveModal}
+            isOpen={activeModal === "add-garment"}
+            onAddItem={(val) => handleAddItem(val)}
+          />
+          <ItemModal
+            activeModal={activeModal}
+            card={selectedCard}
+            onClose={closeActiveModal}
+          />
+        </div>
+      </CurrentTemperatureUnitContext.Provider>
+    </>
+  );
 }
 
 export default App;
