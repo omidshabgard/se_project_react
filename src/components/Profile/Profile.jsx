@@ -1,7 +1,7 @@
 import React from "react";
 import SideBar from "../SideBar/SideBar";
-import ClotheSection from "../ClothSection/ClotheSection";
 import "./Profile.css";
+import ClothesSection from "../ClothesSection/ClothesSection";
 
 function Profile() {
   return (
@@ -10,7 +10,7 @@ function Profile() {
         <SideBar />
       </section>
       <section className="profile__clothSection">
-        <ClotheSection />
+        <ClothesSection />
       </section>
     </div>
   );

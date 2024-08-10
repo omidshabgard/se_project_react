@@ -3,8 +3,8 @@ import logo from '../../assets/night/logo.svg';
 import avatar from '../../assets/night/avatar.png';
 import subMenu from '../../assets/menuIcon.png';
 import closeIcon from '../../assets/closeIcon.png';
-import Toggle from "../ToggleSwitch/Toggle";
 import { Link } from "react-router-dom";
+import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 
 function Header({ handleAddClick, weatherData, setMobileView, mobileView }) {
 	const currentDate = new Date().toLocaleString('default', {
@@ -55,7 +55,7 @@ function Header({ handleAddClick, weatherData, setMobileView, mobileView }) {
       </div>
 
       <div className="header_menu_content">
-        <Toggle />
+        <ToggleSwitch />
         <button
           onClick={handleAddClick}
           type="button"
@@ -63,7 +63,7 @@ function Header({ handleAddClick, weatherData, setMobileView, mobileView }) {
         >
           + Add clothes
         </button>
-        <Link to={"/profile"} className='profile__link'>
+        <Link to={"/profile"} className="profile__link">
           <div className="header__user-container">
             <p className="header__username">Terren Tegegne</p>
             <img src={avatar} alt="Terren Tegegne" className="header__avatar" />

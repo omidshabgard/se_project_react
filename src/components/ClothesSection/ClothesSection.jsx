@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
-import "./ClothSection.css";
+import "./ClothesSection.css";
 import ItemCard from "../ItemCard/ItemCard";
 
-function ClotheSection() {
+function ClothesSection() {
   const { handleCardClick, clothItems } = useContext(
     CurrentTemperatureUnitContext
   );
@@ -30,4 +30,4 @@ function ClotheSection() {
   );
 }
 
-export default ClotheSection;
+export default ClothesSection;
