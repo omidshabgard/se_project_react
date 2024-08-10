@@ -5,7 +5,7 @@ import ItemCard from "../ItemCard/ItemCard";
 import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
 import "./Main.css";
 
-function MainContent({ weatherData, handleCardClick, children,  }) {
+function Main({ weatherData, handleCardClick, children,  }) {
   const { currentTemperatureUnit, clothItems } = useContext(
     CurrentTemperatureUnitContext
   );
@@ -42,4 +42,4 @@ function MainContent({ weatherData, handleCardClick, children,  }) {
   );
 }
 
-export default MainContent;
+export default Main;

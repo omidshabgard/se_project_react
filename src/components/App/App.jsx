@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Header from '../Header/Header';
-import Main from "../Main/MainContent";
+import Main from "../Main/Main";
 import ItemModal from "../ItemModal/ItemModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { coordinates, APIkey } from "../../utils/constants";
