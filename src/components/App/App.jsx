@@ -11,7 +11,7 @@ import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperature
 import AddItemModal from "../AddItemModal/AddItemModal";
 import { Routes, Route } from "react-router-dom";
 import Profile from "../Profile/Profile";
-import { getItems } from "../../utils/Api";
+import { deleteItem, getItems, postItems } from "../../utils/Api";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -24,6 +24,13 @@ function App() {
   const [mobileView, setMobileView] = useState(false);
   const [clothItems, setClothingItems] = useState([]);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+  const [deleteCard, setDeleteCard] = useState(false);
+  const [updatedData, setUpdatedData] = useState(true);
+  const [formData, setFormData] = useState({
+    imageUrl: "",
+    name: "",
+    weather: "hot",
+  });
 
   useEffect(() => {
     getWeather(coordinates, APIkey)
@@ -34,11 +41,11 @@ function App() {
       .catch(console.error);
   }, []);
   useEffect(() => {
-    getItems()
-      .then((data) => {console.log("DATA",data);
-        setClothingItems(data)})
-      // .catch(console.log("Error"));
-  }, []);
+    getItems().then((data) => {
+      setClothingItems(data);
+    });
+    // .catch(console.log("Error"));
+  }, [updatedData]);
 
   const handleCardClick = (card) => {
     setActiveModal("preview");
@@ -46,10 +53,18 @@ function App() {
   };
   const handleAddClick = () => {
     setActiveModal("add-garment");
+    setFormData({ imageUrl: "", name: "", weather: "hot" });
     setMobileView(false);
   };
-  const closeActiveModal = () => {
-    if (activeModal) setActiveModal("");
+  const closeActiveModal = (deleteID = "") => {
+    if (activeModal) {
+      setActiveModal("");
+      setDeleteCard(false);
+      if (deleteID) {
+        deleteItem(deleteID);
+        setUpdatedData((prev) => !prev);
+      }
+    }
   };
 
   const handleToggleSwitchChange = () => {
@@ -58,6 +73,8 @@ function App() {
   };
   const handleAddItem = (e) => {
     closeActiveModal();
+    postItems(e);
+    setUpdatedData((prev) => !prev);
   };
 
   return (
@@ -95,7 +112,10 @@ function App() {
                     </Main>
                   }
                 />
-                <Route path="/profile" element={<Profile />} />
+                <Route
+                  path="/profile"
+                  element={<Profile handleAddClick={handleAddClick} />}
+                />
               </Routes>
             </div>
             <Footer />
@@ -105,11 +125,15 @@ function App() {
             closeActiveModal={closeActiveModal}
             isOpen={activeModal === "add-garment"}
             onAddItem={(val) => handleAddItem(val)}
+            formData={formData}
+            setFormData={setFormData}
           />
           <ItemModal
             activeModal={activeModal}
             card={selectedCard}
             onClose={closeActiveModal}
+            deleteCard={deleteCard}
+            handleDeleteCard={() => setDeleteCard(true)}
           />
         </div>
       </CurrentTemperatureUnitContext.Provider>

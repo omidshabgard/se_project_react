@@ -4,7 +4,7 @@ import avatar from '../../assets/night/avatar.png';
 import subMenu from '../../assets/menuIcon.png';
 import closeIcon from '../../assets/closeIcon.png';
 import { Link } from "react-router-dom";
-import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
+import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 
 function Header({ handleAddClick, weatherData, setMobileView, mobileView }) {
 	const currentDate = new Date().toLocaleString('default', {
@@ -35,14 +35,20 @@ function Header({ handleAddClick, weatherData, setMobileView, mobileView }) {
             >
               <img src={closeIcon} alt="close" className="mobileClose" />
             </button>
-            <div className="mobileView__user-container">
-              <p className="header__username">Terren Tegegne</p>
-              <img
-                src={avatar}
-                alt="Terren Tegegne"
-                className="header__avatar"
-              />
-            </div>
+            <Link
+              to={"/profile"}
+              className="profile__link"
+              onClick={() => setMobileView(false)}
+            >
+              <div className="mobileView__user-container">
+                <p className="header__username">Terren Tegegne</p>
+                <img
+                  src={avatar}
+                  alt="Terren Tegegne"
+                  className="header__avatar"
+                />
+              </div>
+            </Link>
             <button
               onClick={handleAddClick}
               type="button"

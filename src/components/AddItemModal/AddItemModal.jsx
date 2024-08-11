@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
 
-function AddItemModal({ activeModal, closeActiveModal, isOpen, onAddItem }) {
-  const [formData, setFormData] = useState({ weather: "hot" });
-
+function AddItemModal({
+  activeModal,
+  closeActiveModal,
+  isOpen,
+  onAddItem,
+  formData,
+  setFormData,
+}) {
   const handleValueChange = (e) => {
-    console.log(e);
     if (e.target.name === "weather" && e.target.checked) {
       setFormData({ ...formData, [e.target.name]: e.target.id });
+    } else {
+      setFormData({ ...formData, [e.target.id]: e.target.value });
     }
-    else
-    {setFormData({ ...formData, [e.target.id]: e.target.value });}
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     onAddItem(formData);
+    console.log(formData, "formData");
   };
 
   return (
@@ -39,15 +43,15 @@ function AddItemModal({ activeModal, closeActiveModal, isOpen, onAddItem }) {
             onChange={handleValueChange}
           />
         </label>
-        <label htmlFor="imageURL" className="modal__label">
+        <label htmlFor="imageUrl" className="modal__label">
           Image
           <input
             type="text"
             className="modal__input"
-            id="imageURL"
+            id="imageUrl"
             placeholder="Image URL"
             onChange={handleValueChange}
-            value={formData?.imageURL}
+            value={formData?.imageUrl}
           />
         </label>
         <fieldset className="modal__radio-buttons">

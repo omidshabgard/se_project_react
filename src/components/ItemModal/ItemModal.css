@@ -1,6 +1,7 @@
 .modal__image{
     object-fit: cover;
     width: 100%;
+    height: 440px;
 }
 .display_image_modal{
     position: relative;
@@ -25,10 +26,10 @@
     right: 24px;
 }
 .modal__image{
-    border-radius: 16px 16px  0 0;
+    border-radius: 20px 20px  0 0;
 }
 .modal__footer{
-    padding: 20px 20px 32px 32px;
+    padding: 0 20px 32px 0;
 }
 .modal__footer h2,.modal__footer p{
     margin: 0;
@@ -40,9 +41,64 @@
     font-weight: 700;
     margin-top: 12px;
 }
-.modal__footer h2 {
+.modal__footer h2,
+.modal_delete_content,
+.modal_cancel {
     font-family: 'Cabinet Grotesk', sans-serif;
     color: #000000;
     font-size: 20px;
     font-weight: 700;
+}
+.modal_delete,
+.modal_deleteItem {
+    color: rgba(255, 77, 0, 1);
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    background-color: transparent;
+    border: none;
+    align-self: flex-start;
+    cursor: pointer;
+}
+
+.modal_info {
+    display: flex;
+    justify-content: space-between;
+    /* padding-top: 20px; */
+    padding: 20px 28px 36px 28px;
+}
+
+.modal_delete_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 0 24px;
+}
+
+.modal_delete_content {
+    text-align: center;
+}
+
+.modal_delete_info p {
+    margin: 0;
+}
+
+.modal__closeActive {
+    position: absolute;
+    top: 13px;
+        right: 28px;
+    border: none;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+
+.modal_deleteItem {
+    padding: 40px 0 20px;
+    align-self: auto;
+}
+
+.modal_cancel {
+    border: none;
+    background-color: transparent;
 }

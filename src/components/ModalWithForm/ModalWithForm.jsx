@@ -11,7 +11,7 @@ function ModalWithForm({
 }) {
   return (
     <div className={`modal ${isOpen && "modal_opened"}  modal_mobileView`}>
-      <div className="modal__content  ">
+      <div className={`modal__content${isOpen && "Active"}`}>
         <h2 className="modal__title">{title}</h2>
 
         <button onClick={onClick} type="button" className="modal__close">

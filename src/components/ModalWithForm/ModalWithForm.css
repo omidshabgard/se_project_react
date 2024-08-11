@@ -33,16 +33,18 @@
 	background-color: transparent;
 }
 
-.modal__content {
+.modal__content,.modal__contentActive {
 	background-color: white;
 	position: relative;
-	padding: 28px 28px 36px;
 	max-width: 496px;
 	box-sizing: border-box;
 	width: 100%;
 	border-radius: 20px;
 }
 
+.modal__contentActive{
+	padding: 28px 28px 36px 28px;
+}
 .modal__form {
 	display: flex;
 	flex-direction: column;
@@ -105,7 +107,7 @@ legend{
 	margin-bottom: 12px;
 }
 @media screen and (max-width: 627px) {
-	.modal__content{
+	.modal__content,.modal__contentActive{
 		width: 100%;
 		min-width: 343px;
 		max-width: -webkit-fill-available;
