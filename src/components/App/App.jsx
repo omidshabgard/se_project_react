@@ -4,7 +4,7 @@ import Header from '../Header/Header';
 import Main from '../Main/Main';
 import ItemModal from '../ItemModal/ItemModal';
 import { getWeather, filterWeatherData } from '../../utils/weatherApi';
-import { coordinates, APIkey } from '../../utils/constants';
+import { coordinates, APIkey, defaultClothingItems } from '../../utils/constants';
 import Footer from '../Footer/Footer';
 import reload from '../../assets/reload.svg';
 import { CurrentTemperatureUnitContext } from '../../contexts/CurrentTemperatureUnitContext';
@@ -44,13 +44,7 @@ function App() {
 	useEffect(() => {
 		getItems()
 			.then((data) => {
-				console.log(data, 'data');
-				const sortedData = data.sort((a, b) => {
-					b._id - a._id;
-				});
-				console.log(sortedData, 'sortedData');
-
-				setClothingItems(sortedData);
+				setClothingItems(data.sort((a, b) => b._id - a._id));
 			})
 			.catch(console.log('Error'));
 	}, [updatedData]);
