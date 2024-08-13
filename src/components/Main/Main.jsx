@@ -16,9 +16,9 @@ function Main({ weatherData, handleCardClick, children }) {
 				<p className='cards__text'>
 					Today is        
 					{currentTemperatureUnit === 'F'
-						? weatherData.temp.F
-						: weatherData.temp.C}
-					&deg; F / You may want to wear:
+						? <>{`${weatherData.temp.F}`} &deg; F</>
+						: <>{`${weatherData.temp.C} `}&deg; C</>}
+					/ You may want to wear:
 				</p>
 				<ul className='cards__list'>
 					{clothItems

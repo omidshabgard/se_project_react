@@ -19,7 +19,6 @@ function AddItemModal({
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		onAddItem(formData);
-		console.log(formData, 'formData');
 	};
 
 	return (

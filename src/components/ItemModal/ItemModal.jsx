@@ -7,7 +7,6 @@ function ItemModal({
 	deleteCard,
 	handleDeleteCard,
 }) {
-	console.log(card._id, card.imageUrl, card);
 	return (
 		<div
 			className={`modal ${activeModal === 'preview' && 'modal_opened'} `}
@@ -15,7 +14,7 @@ function ItemModal({
 			<div className='modal__content modal__content_type_image preview_modal'>
 				<div className='display_image_modal'>
 					<button
-						onClick={onClose}
+						onClick={() => onClose('')}
 						type='button'
 						className={`modal__close${
 							deleteCard ? 'Active' : ''

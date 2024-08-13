@@ -1,4 +1,5 @@
 const baseUrl = 'http://localhost:3001';
+
 function checkResponse(res) {
 	if (res.ok) {
 		return res.json();
@@ -6,10 +7,10 @@ function checkResponse(res) {
 		return Promise.reject(`Error ${res.status}`);
 	}
 }
+
 function getItems() {
 	return fetch(`${baseUrl}/items`).then(checkResponse);
 }
-export { getItems };
 
 function postItems(generatedData) {
 	return fetch(`${baseUrl}/items`, {
@@ -18,7 +19,6 @@ function postItems(generatedData) {
 		body: JSON.stringify(generatedData),
 	}).then(checkResponse);
 }
-export { postItems };
 
 function deleteItem(id) {
 	if (id) {
@@ -27,4 +27,4 @@ function deleteItem(id) {
 		}).then(checkResponse);
 	}
 }
-export { deleteItem };
+export { deleteItem, postItems, getItems };
