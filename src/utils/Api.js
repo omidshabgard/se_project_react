@@ -27,4 +27,4 @@ function deleteItem(id) {
 		}).then(checkResponse);
 	}
 }
-export { deleteItem, postItems, getItems };
+export { deleteItem, postItems, getItems, checkResponse };

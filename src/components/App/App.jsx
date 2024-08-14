@@ -4,18 +4,18 @@ import Header from "../Header/Header";
 import Main from "../Main/Main";
 import ItemModal from "../ItemModal/ItemModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
-import {
-  coordinates,
-  APIkey,
-  defaultClothingItems,
-} from "../../utils/constants";
+import { coordinates, APIkey } from "../../utils/constants";
 import Footer from "../Footer/Footer";
 import reload from "../../assets/reload.svg";
 import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import { Routes, Route } from "react-router-dom";
 import Profile from "../Profile/Profile";
-import { deleteItem, getItems, postItems } from "../../utils/Api";
+import {
+  deleteItem,
+  getItems,
+  postItems,
+} from "../../utils/Api";
 import { ItemContext } from "../../contexts/ItemsContext";
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
         const filterData = filterWeatherData(data);
         setWeatherData(filterData);
       })
-      .catch(() => console.error);
+      .catch(console.error());
   }, []);
   useEffect(() => {
     getItems()
@@ -62,7 +62,7 @@ function App() {
   };
   const closeActiveModal = (deleteID = "") => {
     if (activeModal) {
-      setActiveModal("");
+      !deleteID && setActiveModal("");
       setDeleteCard(false);
       if (deleteID) {
         deleteItem(deleteID)
@@ -70,6 +70,7 @@ function App() {
             setClothingItems((prevItems) =>
               prevItems.filter((item) => item._id !== deleteID)
             );
+            setActiveModal("");
           })
           .catch(() => console.log("Error"));
       }
@@ -80,18 +81,24 @@ function App() {
     if (currentTemperatureUnit === "C") setCurrentTemperatureUnit("F");
     if (currentTemperatureUnit === "F") setCurrentTemperatureUnit("C");
   };
-
-  const handleAddItem = (e) => {
-    postItems(e)
-      .then((addData) => {
+const handleAddItem = (e) => {
+  console.log(e, "FD");
+  postItems(e)
+    .then((addData) => {
+      if (e.imageUrl?.length && e.name?.length) {
         setClothingItems((prevItems) => {
-          let data = [addData, ...prevItems];
+          const data = [addData, ...prevItems];
           return data.sort((a, b) => b._id - a._id);
         });
         closeActiveModal();
-      })
-      .catch(() => console.log("Error"));
-  };
+      } else {
+        alert("Validation failed:", e);
+      }
+    })
+    .catch((error) => {
+      console.log("Add item error:", error);
+    });
+};
 
   return (
     <CurrentTemperatureUnitContext.Provider

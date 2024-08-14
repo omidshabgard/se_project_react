@@ -18,7 +18,8 @@ function ItemModal({
 						type='button'
 						className={`modal__close${
 							deleteCard ? 'Active' : ''
-						} itemModal_close preview_modal_close`}
+						}
+						 itemModal_close preview_modal_close`}
 					>
 						<img src={closeIcon} alt='closeIcon' />
 					</button>
