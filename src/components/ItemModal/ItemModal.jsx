@@ -8,6 +8,7 @@ function ItemModal({
 	handleDeleteCard,
 }) {
 	return (
+		
 		<div
 			className={`modal ${activeModal === 'preview' && 'modal_opened'} `}
 		>
