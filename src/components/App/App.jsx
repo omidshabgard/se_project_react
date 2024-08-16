@@ -11,11 +11,7 @@ import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperature
 import AddItemModal from "../AddItemModal/AddItemModal";
 import { Routes, Route } from "react-router-dom";
 import Profile from "../Profile/Profile";
-import {
-  deleteItem,
-  getItems,
-  postItems,
-} from "../../utils/Api";
+import { deleteItem, getItems, postItems } from "../../utils/Api";
 import { ItemContext } from "../../contexts/ItemsContext";
 
 function App() {
@@ -42,8 +38,9 @@ function App() {
         const filterData = filterWeatherData(data);
         setWeatherData(filterData);
       })
-      .catch(console.error());
+      .catch(console.error);
   }, []);
+
   useEffect(() => {
     getItems()
       .then((data) => {
@@ -51,57 +48,59 @@ function App() {
       })
       .catch(() => console.log("Error"));
   }, []);
+
   const handleCardClick = (card) => {
     setActiveModal("preview");
     setSelectedCard(card);
   };
+
   const handleAddClick = () => {
     setActiveModal("add-garment");
     setFormData({ imageUrl: "", name: "", weather: "hot" });
     setMobileView(false);
   };
-  const closeActiveModal = (deleteID = "") => {
-    if (activeModal) {
-      !deleteID && setActiveModal("");
-      setDeleteCard(false);
-      if (deleteID) {
-        deleteItem(deleteID)
-          .then(() => {
-            setClothingItems((prevItems) =>
-              prevItems.filter((item) => item._id !== deleteID)
-            );
-            setActiveModal("");
-          })
-          .catch(() => console.log("Error"));
-      }
-    }
+
+  const closeActiveModal = ( ) => {
+    setActiveModal("");
+  };
+
+  const handleDeleteItem = (deleteID = "") => {
+    console.log(deleteID);
+    deleteItem(deleteID)
+      .then(() => {
+        setClothingItems((prevItems) =>
+          prevItems.filter((item) => item._id !== deleteID)
+        );
+        setDeleteCard(false);
+        closeActiveModal();
+      })
+      .catch(() => console.log("Error"));
   };
 
   const handleToggleSwitchChange = () => {
     if (currentTemperatureUnit === "C") setCurrentTemperatureUnit("F");
     if (currentTemperatureUnit === "F") setCurrentTemperatureUnit("C");
   };
-const handleAddItem = (e) => {
-  console.log(e, "FD");
-  postItems(e)
-    .then((addData) => {
-      if (e.imageUrl?.length && e.name?.length) {
-        setClothingItems((prevItems) => {
-          const data = [addData, ...prevItems];
-          return data.sort((a, b) => b._id - a._id);
-        });
-        closeActiveModal();
-      } else {
-        alert("Validation failed:", e);
-      }
-    })
-    .catch((error) => {
-      console.log("Add item error:", error);
-    });
-};
+
+  const handleAddItem = (e) => {
+    postItems(e)
+      .then((addData) => {
+        if (e.imageUrl?.length && e.name?.length) {
+          setClothingItems((prevItems) => {
+            const data = [addData, ...prevItems];
+            return data.sort((a, b) => b._id - a._id);
+          });
+          closeActiveModal();
+        } else {
+          alert("Validation failed:", e);
+        }
+      })
+      .catch((error) => {
+        console.log("Add item error:", error);
+      });
+  };
 
   return (
-    
     <CurrentTemperatureUnitContext.Provider
       value={{
         currentTemperatureUnit,
@@ -145,7 +144,7 @@ const handleAddItem = (e) => {
           </div>
           <AddItemModal
             activeModal={activeModal}
-            closeActiveModal={() => closeActiveModal("")}
+            closeActiveModal={closeActiveModal}
             isOpen={activeModal === "add-garment"}
             onAddItem={(val) => handleAddItem(val)}
             formData={formData}
@@ -154,9 +153,8 @@ const handleAddItem = (e) => {
           <ItemModal
             activeModal={activeModal}
             card={selectedCard}
-            onClose={(id) => {
-              closeActiveModal(id);
-            }}
+            onClose={closeActiveModal}
+            onDelete={(id) => handleDeleteItem(id)}
             deleteCard={deleteCard}
             handleDeleteCard={() => setDeleteCard(true)}
           />

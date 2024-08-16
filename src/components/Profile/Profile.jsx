@@ -14,7 +14,6 @@ function Profile({ handleAddClick }) {
       </section>
     </div>
   );
-  
 }
 
 export default Profile;
