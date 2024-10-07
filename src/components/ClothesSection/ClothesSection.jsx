@@ -4,9 +4,12 @@ import './ClothesSection.css';
 import ItemCard from '../ItemCard/ItemCard';
 import { ItemContext } from '../../contexts/ItemsContext';
 
-function ClothesSection({ handleAddClick }) {
+function ClothesSection({ handleAddClick, currentUser }) {
 	const { clothItems } = useContext(CurrentTemperatureUnitContext);
 	const { handleCardClick } = useContext(ItemContext);
+
+	const currentUserItems = clothItems?.filter(item => currentUser && item.owner === currentUser._id);
+
 	return (
 		<div className='cloth-section'>
 			<div className='cloth-header'>
@@ -17,10 +20,12 @@ function ClothesSection({ handleAddClick }) {
 			</div>
 			<div>
 				<ul className='cards__list'>
-					{clothItems?.map((item) => {
+					{currentUserItems?.map((item) => {
+						console.log(item)
 						return (
 							<ItemCard
 								key={item._id}
+								currentUser={currentUser}
 								item={item}
 								onCardClick={handleCardClick}
 							/>

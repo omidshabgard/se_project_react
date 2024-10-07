@@ -9,10 +9,11 @@ import Footer from "../Footer/Footer";
 import reload from "../../assets/reload.svg";
 import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
 import AddItemModal from "../AddItemModal/AddItemModal";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate  } from "react-router-dom";
 import Profile from "../Profile/Profile";
 import { deleteItem, getItems, postItems } from "../../utils/Api";
 import { ItemContext } from "../../contexts/ItemsContext";
+import { checkToken } from '../../utils/auth'
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -32,72 +33,99 @@ function App() {
     weather: "hot",
   });
 
-  useEffect(() => {
-    getWeather(coordinates, APIkey)
-      .then((data) => {
-        const filterData = filterWeatherData(data);
-        setWeatherData(filterData);
-      })
-      .catch(console.error);
-  }, []);
+  const navigate = useNavigate();
+
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    getItems()
-      .then((data) => {
-        setClothingItems(data);
-      })
-      .catch(() => console.log("Error"));
+    const token = localStorage.getItem('token');
+    if (token) {
+      checkToken(token)
+        .then((userData) => {
+          setCurrentUser(userData);
+          setIsLoggedIn(true);
+        })
+        .catch((err) => {
+          console.error('Token validation failed:', err);
+          localStorage.removeItem('token');
+          setIsLoggedIn(false);
+        });
+    }
   }, []);
 
-  const handleCardClick = (card) => {
-    setActiveModal("preview");
-    setSelectedCard(card);
-  };
+	useEffect(() => {
+		getWeather(coordinates, APIkey)
+			.then((data) => {
+				const filterData = filterWeatherData(data);
+				setWeatherData(filterData);
+			})
+			.catch(console.error);
+	}, []);
 
-  const handleAddClick = () => {
-    setActiveModal("add-garment");
-    setFormData({ imageUrl: "", name: "", weather: "hot" });
-    setMobileView(false);
-  };
+	useEffect(() => {
+		getItems()
+			.then((data) => {
+				setClothingItems(data);
+			})
+			.catch(() => console.log('Error'));
+	}, []);
 
-  const closeActiveModal = ( ) => {
-    setActiveModal("");
-  };
+	const handleCardClick = (card) => {
+		setActiveModal('preview');
+		setSelectedCard(card);
+	};
 
-  const handleDeleteItem = (deleteID = "") => {
-    console.log(deleteID);
-    deleteItem(deleteID)
-      .then(() => {
-        setClothingItems((prevItems) =>
-          prevItems.filter((item) => item._id !== deleteID)
-        );
-        setDeleteCard(false);
-        closeActiveModal();
-      })
-      .catch(() => console.log("Error"));
-  };
+	const handleAddClick = () => {
+		setActiveModal('add-garment');
+		setFormData({ imageUrl: '', name: '', weather: 'hot' });
+		setMobileView(false);
+	};
 
-  const handleToggleSwitchChange = () => {
-    if (currentTemperatureUnit === "C") setCurrentTemperatureUnit("F");
-    if (currentTemperatureUnit === "F") setCurrentTemperatureUnit("C");
-  };
+	const closeActiveModal = () => {
+		setActiveModal('');
+	};
 
-  const handleAddItem = (e) => {
-    postItems(e)
-      .then((addData) => {
-        if (e.imageUrl?.length && e.name?.length) {
-          setClothingItems((prevItems) => {
-            const data = [addData, ...prevItems];
-            return data.sort((a, b) => b._id - a._id);
-          });
-          closeActiveModal();
-        } else {
-          alert("Validation failed:", e);
-        }
-      })
-      .catch((error) => {
-        console.log("Add item error:", error);
-      });
+	const handleDeleteItem = (deleteID = '') => {
+		deleteItem(deleteID)
+			.then(() => {
+				setClothingItems((prevItems) =>
+					prevItems.filter((item) => item._id !== deleteID)
+				);
+				setDeleteCard(false);
+				closeActiveModal();
+			})
+			.catch(() => console.log('Error'));
+	};
+
+	const handleToggleSwitchChange = () => {
+		if (currentTemperatureUnit === 'C') setCurrentTemperatureUnit('F');
+		if (currentTemperatureUnit === 'F') setCurrentTemperatureUnit('C');
+	};
+
+	const handleAddItem = (e) => {
+		postItems(e)
+			.then((addData) => {
+				if (e.imageUrl?.length && e.name?.length) {
+					setClothingItems((prevItems) => {
+						const data = [addData, ...prevItems];
+						return data.sort((a, b) => b._id - a._id);
+					});
+					closeActiveModal();
+				} else {
+					alert('Validation failed:', e);
+				}
+			})
+			.catch((error) => {
+				console.log('Add item error:', error);
+			});
+	};
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setCurrentUser(null);
+    setIsLoggedIn(false);
+    navigate("/");
   };
 
   return (
@@ -114,10 +142,14 @@ function App() {
           <div className="page__content">
             <div>
               <Header
+                currentUser={currentUser}
+                isLoggedIn={isLoggedIn}
                 handleAddClick={handleAddClick}
                 weatherData={weatherData}
                 mobileView={mobileView}
                 setMobileView={setMobileView}
+                setCurrentUser={setCurrentUser}  
+                setIsLoggedIn={setIsLoggedIn}  
               />
               <Routes>
                 <Route
@@ -134,10 +166,7 @@ function App() {
                     </Main>
                   }
                 />
-                <Route
-                  path="/profile"
-                  element={<Profile handleAddClick={handleAddClick} />}
-                />
+                <Route path="/profile" element={<Profile currentUser={currentUser} handleAddClick={handleAddClick} handleLogout={handleLogout} setCurrentUser={setCurrentUser} />} />
               </Routes>
             </div>
             <Footer />

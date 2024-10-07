@@ -9,6 +9,24 @@
 	margin-right: 24px;
 }
 
+
+.header__signup {
+	width: 67px;
+	height: 24px;
+	font-family: Cabinet Grotesk;
+	font-size: 20px;
+	font-weight: 700;
+	margin-right: 10px;
+}
+
+.header__login {
+	width: 52px;
+	height: 25px;
+	font-family: Cabinet Grotesk;
+	font-size: 20px;
+	font-weight: 700;
+}
+
 .header__date-and-location {
 	margin: 0;
 	font-family: 'Cabinet Grotesk', sans-serif;
@@ -24,12 +42,19 @@
 	color: #000000;
 	font-size: 20px;
 	font-weight: 700;
+	cursor: pointer;
 }
 
 .header__user-container {
 	display: flex;
 	align-items: center;
 	gap: 12px;
+}
+
+.header__avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
 }
 
 .header__username {
@@ -52,6 +77,9 @@
 	display: none;
 }
 @media screen and (max-width: 627px) {
+	.header__signup {
+		margin-right: unset !important;
+	}
 	.submenu_close,.submenu{
 		display: block;
 		border: none;

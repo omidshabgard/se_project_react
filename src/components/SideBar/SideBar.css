@@ -6,4 +6,12 @@
 	color: #000000;
 	font-size: 20px;
 	font-weight: 700;
+    line-height: 24.8px;
+    cursor: pointer;
+}
+
+.sideBar .sideBar_Avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
 }

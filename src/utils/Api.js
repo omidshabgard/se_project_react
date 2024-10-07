@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:3001';
+const baseUrl = "http://localhost:3001";
 
 function checkResponse(res) {
   if (res.ok) {
@@ -12,19 +12,75 @@ function getItems() {
   return fetch(`${baseUrl}/items`).then((res) => checkResponse(res));
 }
 
+// function postItems(generatedData) {
+//   return fetch(`${baseUrl}/items`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(generatedData),
+//   }).then((res) => checkResponse(res));
+// }
+
 function postItems(generatedData) {
+  const token = localStorage.getItem("token");
+
   return fetch(`${baseUrl}/items`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, // Include the token here if required
+    },
     body: JSON.stringify(generatedData),
   }).then((res) => checkResponse(res));
 }
 
+// function deleteItem(id) {
+//   if (id) {
+//     return fetch(`${baseUrl}/items/${id}`, {
+//       method: "DELETE",
+//     }).then((res) => checkResponse(res));
+//   }
+// }
+
 function deleteItem(id) {
   if (id) {
+    const token = localStorage.getItem("token");
+
     return fetch(`${baseUrl}/items/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }).then((res) => checkResponse(res));
   }
 }
-export { deleteItem, postItems, getItems, checkResponse };
+
+function likeItem(itemId) {
+  const token = localStorage.getItem("token");
+
+  return fetch(`${baseUrl}/items/${itemId}/likes`, {
+    method: "PUT", 
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => checkResponse(res));
+}
+
+function dislikeItem(itemId) {
+  const token = localStorage.getItem("token");
+
+  return fetch(`${baseUrl}/items/${itemId}/likes`, {
+    method: "DELETE", 
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => checkResponse(res));
+}
+
+export {
+  deleteItem,
+  postItems,
+  getItems,
+  checkResponse,
+  likeItem,
+  dislikeItem,
+};

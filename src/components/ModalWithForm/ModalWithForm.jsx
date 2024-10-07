@@ -4,6 +4,7 @@ import closeIcon from '../../assets/closeIcon.png';
 function ModalWithForm({
   children,
   buttonText,
+  subButton,
   title,
   isOpen,
   onClick,
@@ -20,9 +21,14 @@ function ModalWithForm({
 
         <form className="modal__form" onSubmit={onSubmit}>
           {children}
-          <button type="submit" className="modal__submit">
-            {buttonText}
-          </button>
+          <div>
+            <button type="submit" className="modal__submit">
+              {buttonText} 
+            </button>
+            <span className='sub__button'>
+              {subButton ? ` or ${subButton}` : null}
+            </span>
+          </div>
         </form>
       </div>
     </div>
