@@ -3,10 +3,12 @@ import { CurrentTemperatureUnitContext } from '../../contexts/CurrentTemperature
 import './ClothesSection.css';
 import ItemCard from '../ItemCard/ItemCard';
 import { ItemContext } from '../../contexts/ItemsContext';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext'; 
 
-function ClothesSection({ handleAddClick, currentUser }) {
+function ClothesSection({ handleAddClick }) {
 	const { clothItems } = useContext(CurrentTemperatureUnitContext);
 	const { handleCardClick } = useContext(ItemContext);
+	const { currentUser } = useContext(CurrentUserContext);
 
 	const currentUserItems = clothItems?.filter(item => currentUser && item.owner === currentUser._id);
 
@@ -21,11 +23,9 @@ function ClothesSection({ handleAddClick, currentUser }) {
 			<div>
 				<ul className='cards__list'>
 					{currentUserItems?.map((item) => {
-						console.log(item)
 						return (
 							<ItemCard
 								key={item._id}
-								currentUser={currentUser}
 								item={item}
 								onCardClick={handleCardClick}
 							/>

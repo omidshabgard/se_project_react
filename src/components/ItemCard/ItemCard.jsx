@@ -3,8 +3,13 @@ import likeIcon from "../../assets/rating/heart-fill.svg";
 import dislikeIcon from "../../assets/rating/dislike.png";
 import { likeItem, dislikeItem } from "../../utils/Api";
 import { useState , useEffect } from "react";
+import { useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext'; 
 
-function ItemCard({ item, onCardClick, currentUser }) {
+function ItemCard({ item, onCardClick }) {
+
+  const { currentUser } = useContext(CurrentUserContext);
+
   const handleCardClick = () => {
     onCardClick(item);
   };

@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import avatar from "../../assets/night/avatar.png";
 import "./SideBar.css";
 import UpdateUserModal from "../UpdateUserModal";
-import { checkToken } from '../../utils/auth'
+import { checkToken } from '../../utils/auth';
+import { useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext'; 
 
-function SideBar({ currentUser, setCurrentUser, handleLogout }) {
+function SideBar({ handleLogout }) {
+
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
 
   const openUpdateModal = () => setIsUpdateOpen(true);

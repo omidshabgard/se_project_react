@@ -13,7 +13,11 @@ import { Routes, Route, useNavigate  } from "react-router-dom";
 import Profile from "../Profile/Profile";
 import { deleteItem, getItems, postItems } from "../../utils/Api";
 import { ItemContext } from "../../contexts/ItemsContext";
-import { checkToken } from '../../utils/auth'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import RegisterModal from '../RegisterModal';
+import LoginModal from '../LoginModal';
+import ProtectedRoute  from '../ProtectedRoute';
+import { checkToken, signup , signin } from '../../utils/auth'
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -37,6 +41,12 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  const closeRegisterModal = () => setIsRegisterOpen(false);
+  const closeLoginModal = () => setIsLoginOpen(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -121,6 +131,32 @@ function App() {
 			});
 	};
 
+  const handleUserRegister = async ({ name, avatar, email, password }) => {
+    try {
+      const data = await signup(name, avatar, email, password);
+      handleUserLogin({email, password});
+      closeRegisterModal();
+      alert('Registration and login successful!');
+    } catch (err) {
+      console.error('Registration error:', err);
+      alert('Registration failed.');
+    }
+  };
+
+  const handleUserLogin = async ({ email, password }) => {
+    try {
+      const data = await signin(email, password);
+      localStorage.setItem('token', data.token);
+      const userData = await checkToken(data.token);
+      setCurrentUser(userData);
+      setIsLoggedIn(true);
+      closeLoginModal();
+    } catch (err) {
+      console.error('Login error:', err);
+      alert('Login failed. Please check your credentials.');
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     setCurrentUser(null);
@@ -129,67 +165,87 @@ function App() {
   };
 
   return (
-    <CurrentTemperatureUnitContext.Provider
-      value={{
-        currentTemperatureUnit,
-        handleToggleSwitchChange,
-        weatherData,
-        clothItems,
-      }}
-    >
-      <ItemContext.Provider value={{ handleCardClick }}>
-        <div className="page">
-          <div className="page__content">
-            <div>
-              <Header
-                currentUser={currentUser}
-                isLoggedIn={isLoggedIn}
-                handleAddClick={handleAddClick}
-                weatherData={weatherData}
-                mobileView={mobileView}
-                setMobileView={setMobileView}
-                setCurrentUser={setCurrentUser}  
-                setIsLoggedIn={setIsLoggedIn}  
-              />
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <Main
-                      weatherData={weatherData}
-                      handleCardClick={handleCardClick}
-                    >
-                      <button className="random_mobileView">
-                        <img src={reload} alt="reload" />
-                        <div>Randomize</div>
-                      </button>
-                    </Main>
-                  }
+    <CurrentUserContext.Provider value={{ currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn, setIsRegisterOpen, setIsLoginOpen }}>
+      <CurrentTemperatureUnitContext.Provider
+        value={{
+          currentTemperatureUnit,
+          handleToggleSwitchChange,
+          weatherData,
+          clothItems,
+        }}
+      >
+        <ItemContext.Provider value={{ handleCardClick }}>
+          <div className="page">
+            <div className="page__content">
+              <div>
+                <Header
+                  closeRegisterModal={closeRegisterModal}
+
+                  handleAddClick={handleAddClick}
+                  weatherData={weatherData}
+                  mobileView={mobileView}
+                  setMobileView={setMobileView}
                 />
-                <Route path="/profile" element={<Profile currentUser={currentUser} handleAddClick={handleAddClick} handleLogout={handleLogout} setCurrentUser={setCurrentUser} />} />
-              </Routes>
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <Main
+                        weatherData={weatherData}
+                        handleCardClick={handleCardClick}
+                      >
+                        <button className="random_mobileView">
+                          <img src={reload} alt="reload" />
+                          <div>Randomize</div>
+                        </button>
+                      </Main>
+                    }
+                  />
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <Profile handleAddClick={handleAddClick} handleLogout={handleLogout} />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </div>
+              <Footer />
             </div>
-            <Footer />
+            <AddItemModal
+              activeModal={activeModal}
+              closeActiveModal={closeActiveModal}
+              isOpen={activeModal === "add-garment"}
+              onAddItem={(val) => handleAddItem(val)}
+              formData={formData}
+              setFormData={setFormData}
+            />
+            <ItemModal
+              activeModal={activeModal}
+              card={selectedCard}
+              onClose={closeActiveModal}
+              onDelete={(id) => handleDeleteItem(id)}
+              deleteCard={deleteCard}
+              handleDeleteCard={() => setDeleteCard(true)}
+            />
+            {isRegisterOpen && (
+              <RegisterModal isOpen={isRegisterOpen}
+                onClose={closeRegisterModal}
+                onRegisterSuccess={handleUserRegister} />
+            )}
+
+            {isLoginOpen && (
+              <LoginModal
+                isOpen={isLoginOpen}
+                onClose={closeLoginModal}
+                onLoginSuccess={handleUserLogin}
+              />
+            )}
           </div>
-          <AddItemModal
-            activeModal={activeModal}
-            closeActiveModal={closeActiveModal}
-            isOpen={activeModal === "add-garment"}
-            onAddItem={(val) => handleAddItem(val)}
-            formData={formData}
-            setFormData={setFormData}
-          />
-          <ItemModal
-            activeModal={activeModal}
-            card={selectedCard}
-            onClose={closeActiveModal}
-            onDelete={(id) => handleDeleteItem(id)}
-            deleteCard={deleteCard}
-            handleDeleteCard={() => setDeleteCard(true)}
-          />
-        </div>
-      </ItemContext.Provider>
-    </CurrentTemperatureUnitContext.Provider>
+        </ItemContext.Provider>
+      </CurrentTemperatureUnitContext.Provider>
+    </CurrentUserContext.Provider>
   );
 }
 

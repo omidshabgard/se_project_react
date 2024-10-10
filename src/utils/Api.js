@@ -12,14 +12,6 @@ function getItems() {
   return fetch(`${baseUrl}/items`).then((res) => checkResponse(res));
 }
 
-// function postItems(generatedData) {
-//   return fetch(`${baseUrl}/items`, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(generatedData),
-//   }).then((res) => checkResponse(res));
-// }
-
 function postItems(generatedData) {
   const token = localStorage.getItem("token");
 
@@ -27,19 +19,11 @@ function postItems(generatedData) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`, // Include the token here if required
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(generatedData),
   }).then((res) => checkResponse(res));
 }
-
-// function deleteItem(id) {
-//   if (id) {
-//     return fetch(`${baseUrl}/items/${id}`, {
-//       method: "DELETE",
-//     }).then((res) => checkResponse(res));
-//   }
-// }
 
 function deleteItem(id) {
   if (id) {

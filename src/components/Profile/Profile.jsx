@@ -3,14 +3,14 @@ import SideBar from "../SideBar/SideBar";
 import "./Profile.css";
 import ClothesSection from "../ClothesSection/ClothesSection";
 
-function Profile({ currentUser, setCurrentUser, handleAddClick, handleLogout }) {
+function Profile({ handleAddClick, handleLogout }) {
   return (
     <div className="profile">
       <section className="profile__sideBar">
-        <SideBar currentUser={currentUser} handleLogout={handleLogout} setCurrentUser={setCurrentUser}  />
+        <SideBar handleLogout={handleLogout}/>
       </section>
       <section className="profile__clothSection">
-        <ClothesSection handleAddClick={handleAddClick} currentUser={currentUser} />
+        <ClothesSection handleAddClick={handleAddClick}/>
       </section>
     </div>
   );

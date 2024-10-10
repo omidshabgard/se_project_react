@@ -5,53 +5,20 @@ import subMenu from '../../assets/menuIcon.png';
 import closeIcon from '../../assets/closeIcon.png';
 import { Link } from "react-router-dom";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
-import { useEffect, useState } from 'react';
-import RegisterModal from '../RegisterModal';
-import LoginModal from '../LoginModal';
-import { checkToken, signin } from '../../utils/auth'
+import { useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
+function Header({ handleAddClick, weatherData, setMobileView, mobileView }) {
+  
+  const { currentUser, isLoggedIn, setIsRegisterOpen, setIsLoginOpen } = useContext(CurrentUserContext);
 
-function Header({ setCurrentUser, setIsLoggedIn, currentUser, isLoggedIn, handleAddClick, weatherData, setMobileView, mobileView }) {
   const currentDate = new Date().toLocaleString('default', {
     month: 'long',
     day: 'numeric',
   });
 
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-
   const openRegisterModal = () => setIsRegisterOpen(true);
-  const closeRegisterModal = () => setIsRegisterOpen(false);
-
   const openLoginModal = () => setIsLoginOpen(true);
-  const closeLoginModal = () => setIsLoginOpen(false);
-
-  const handleUserRegister = async ({ name, avatar, email, password }) => {
-    try {
-      const data = await signup(name, avatar, email, password);
-      const loginData = await signin(email, password);
-      localStorage.setItem('token', loginData.token);
-      closeRegisterModal();
-      alert('Registration and login successful!');
-    } catch (err) {
-      console.error('Registration error:', err);
-      alert('Registration failed.');
-    }
-  };
-
-  const handleUserLogin = async ({ email, password }) => {
-    try {
-      const data = await signin(email, password);
-      localStorage.setItem('token', data.token);
-      const userData = await checkToken(data.token);
-      setCurrentUser(userData);
-      setIsLoggedIn(true);
-      closeLoginModal();
-    } catch (err) {
-      console.error('Login error:', err);
-      alert('Login failed. Please check your credentials.');
-    }
-  };
 
   return (
     <header className="header">
@@ -151,20 +118,6 @@ function Header({ setCurrentUser, setIsLoggedIn, currentUser, isLoggedIn, handle
           </>
         )}
       </div>
-
-      {isRegisterOpen && (
-        <RegisterModal isOpen={isRegisterOpen}
-          onClose={closeRegisterModal}
-          onRegisterSuccess={handleUserRegister} />
-      )}
-
-      {isLoginOpen && (
-        <LoginModal
-          isOpen={isLoginOpen}
-          onClose={closeLoginModal}
-          onLoginSuccess={handleUserLogin}
-        />
-      )}
     </header>
   );
 }
