@@ -24,6 +24,14 @@
 	font-weight: 700;
 }
 
+.sub__button span:first-child {
+	margin: 0px 5px;
+}
+
+.sub__button .btn {
+	cursor: pointer;
+}
+
 .modal__title {
 	margin: 0;
 	font-family: 'Cabinet Grotesk', sans-serif;

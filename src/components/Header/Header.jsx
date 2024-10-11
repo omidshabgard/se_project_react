@@ -7,10 +7,12 @@ import { Link } from "react-router-dom";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import { useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { StateContext } from '../../contexts/StateContext,js';
 
-function Header({ handleAddClick, weatherData, setMobileView, mobileView }) {
+function Header({ handleAddClick, weatherData, setMobileView, mobileView, getItemList }) {
   
-  const { currentUser, isLoggedIn, setIsRegisterOpen, setIsLoginOpen } = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
+  const { isLoggedIn, setIsRegisterOpen, setIsLoginOpen } = useContext(StateContext);
 
   const currentDate = new Date().toLocaleString('default', {
     month: 'long',
@@ -22,7 +24,7 @@ function Header({ handleAddClick, weatherData, setMobileView, mobileView }) {
 
   return (
     <header className="header">
-      <div className="header_logo_and_location">
+      <div className="header_logo_and_location" onClick={getItemList}>
         <Link to={"/"}>
           <img className="header__logo" src={logo} alt="logo" />
         </Link>
@@ -109,7 +111,7 @@ function Header({ handleAddClick, weatherData, setMobileView, mobileView }) {
             >
               + Add clothes
             </button>
-            <Link to={"/profile"} className="profile__link">
+            <Link to={"/profile"} className="profile__link" onClick={getItemList}>
               <div className="header__user-container">
                 <p className="header__username">{currentUser ? currentUser.name : "User"}</p>
                 <img src={currentUser ? currentUser.avatar : avatar} alt={currentUser ? currentUser.name : "User"} className="header__avatar" />

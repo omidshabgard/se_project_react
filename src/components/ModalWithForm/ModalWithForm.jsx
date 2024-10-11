@@ -9,6 +9,7 @@ function ModalWithForm({
   isOpen,
   onClick,
   onSubmit,
+  handleSubButton
 }) {
   return (
     <div className={`modal ${isOpen && "modal_opened"}  modal_mobileView`}>
@@ -26,7 +27,11 @@ function ModalWithForm({
               {buttonText} 
             </button>
             <span className='sub__button'>
-              {subButton ? ` or ${subButton}` : null}
+              {subButton ? (
+                <>
+                  <span>or</span><span className="btn" onClick={() => handleSubButton(subButton)}>{subButton}</span>
+                </>
+              ) : null}
             </span>
           </div>
         </form>

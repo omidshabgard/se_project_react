@@ -5,10 +5,13 @@ import UpdateUserModal from "../UpdateUserModal";
 import { checkToken } from '../../utils/auth';
 import { useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'; 
+import { StateContext } from "../../contexts/StateContext,js";
 
 function SideBar({ handleLogout }) {
 
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
+
+  const { setCurrentUser } = useContext(StateContext);
 
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
 

@@ -1,5 +1,8 @@
 import closeIcon from '../../assets/closeIcon.png';
 import './ItemModal.css';
+import { useContext } from 'react';
+import { StateContext } from '../../contexts/StateContext,js';
+
 function ItemModal({
   activeModal,
   onClose,
@@ -8,6 +11,9 @@ function ItemModal({
   handleDeleteCard,
   onDelete,
 }) {
+
+  const { isLoggedIn } = useContext(StateContext);
+
   return (
     <div className={`modal ${activeModal === "preview" && "modal_opened"} `}>
       <div className="modal__content modal__content_type_image preview_modal">
@@ -30,9 +36,9 @@ function ItemModal({
               <h2 className="modal__caption">{card.name}</h2>
               <p className="modal__weather">Weather: {card.weather}</p>
             </div>
-            <button className="modal_delete" onClick={handleDeleteCard}>
+            {isLoggedIn && (<button className="modal_delete" onClick={handleDeleteCard}>
               Delete item
-            </button>
+            </button>)}
           </div>
         )}
         {deleteCard && (

@@ -5,10 +5,12 @@ import { likeItem, dislikeItem } from "../../utils/Api";
 import { useState , useEffect } from "react";
 import { useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'; 
+import { StateContext } from "../../contexts/StateContext,js";
 
 function ItemCard({ item, onCardClick }) {
 
   const { currentUser } = useContext(CurrentUserContext);
+  const { isLoggedIn } = useContext(StateContext);
 
   const handleCardClick = () => {
     onCardClick(item);
@@ -44,13 +46,15 @@ function ItemCard({ item, onCardClick }) {
     <li className="card">
       <h2 className="card__name">{item.name}</h2>
 
-      <img
-        className="like__icon"
-        src={isLiked ? likeIcon : dislikeIcon}
-        alt={isLiked ? "like" : "DisLike"}
-        onClick={handleLikeClick}
-        style={{ cursor: "pointer" }}
-      />
+      {isLoggedIn && (
+        <img
+          className="like__icon"
+          src={isLiked ? likeIcon : dislikeIcon}
+          alt={isLiked ? "like" : "DisLike"}
+          onClick={handleLikeClick}
+          style={{ cursor: "pointer" }}
+        />
+      )}
 
       <img
         onClick={handleCardClick}

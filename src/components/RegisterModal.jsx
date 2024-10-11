@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ModalWithForm from './ModalWithForm/ModalWithForm';
 
-const RegisterModal = ({ isOpen, onClose, onRegisterSuccess }) => {
+const RegisterModal = ({ isOpen, onClose, onRegisterSuccess, handleSubButton }) => {
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState('');
   const [email, setEmail] = useState('');
@@ -26,6 +26,7 @@ const RegisterModal = ({ isOpen, onClose, onRegisterSuccess }) => {
       isOpen={isOpen}
       onClick={onClose}
       onSubmit={handleSubmit}
+      handleSubButton={handleSubButton} 
     >
       {error && <p className='error-message'>{error}</p>}
       <label className='modal__label' htmlFor='name-input'>
