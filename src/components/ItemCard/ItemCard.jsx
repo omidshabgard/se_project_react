@@ -2,9 +2,9 @@ import "./ItemCard.css";
 import likeIcon from "../../assets/rating/heart-fill.svg";
 import dislikeIcon from "../../assets/rating/dislike.png";
 import { likeItem, dislikeItem } from "../../utils/Api";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useContext } from 'react';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext'; 
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { StateContext } from "../../contexts/StateContext,js";
 
 function ItemCard({ item, onCardClick }) {
@@ -44,17 +44,18 @@ function ItemCard({ item, onCardClick }) {
 
   return (
     <li className="card">
-      <h2 className="card__name">{item.name}</h2>
-
-      {isLoggedIn && (
-        <img
-          className="like__icon"
-          src={isLiked ? likeIcon : dislikeIcon}
-          alt={isLiked ? "like" : "DisLike"}
-          onClick={handleLikeClick}
-          style={{ cursor: "pointer" }}
-        />
-      )}
+      <div className="card__text">
+        <h2 className="card__name">{item.name}</h2>
+        {isLoggedIn && (
+          <img
+            className="like__icon"
+            src={isLiked ? likeIcon : dislikeIcon}
+            alt={isLiked ? "like" : "DisLike"}
+            onClick={handleLikeClick}
+            style={{ cursor: "pointer" }}
+          />
+        )}
+      </div>
 
       <img
         onClick={handleCardClick}

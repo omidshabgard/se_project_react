@@ -8,9 +8,11 @@
   margin: 20px 0;
 }
 
-.card__name {
+.card__text {
   position: absolute;
-  top: 15px;
+}
+
+.card__name {
   background-color: white;
   padding: 2px 12px;
   border-radius: 5px;
@@ -30,10 +32,14 @@
   border-radius: 19px;
 }
 
+.card__text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .like__icon {
   height: 15px;
   width: 18px;
-  position: absolute;
-  top: 33px;
-  right: 94px;
+  margin-left: 10px;
 }
