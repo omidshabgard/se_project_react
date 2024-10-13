@@ -110,6 +110,7 @@ function App() {
 
   const closeActiveModal = () => {
     setActiveModal('');
+    setDeleteCard(false);
   };
 
   const handleDeleteItem = (deleteID = '') => {
