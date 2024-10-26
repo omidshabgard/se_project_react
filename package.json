@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"homepage": "https://lovese.jumpingcrab.com",
 	"scripts": {
 		"dev": "vite --open",
 		"build": "vite build",
@@ -10,11 +11,13 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"celebrate": "^15.0.3",
 		"json-server": "^1.0.0-beta.1",
 		"mongoose": "^8.6.0",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"react-router-dom": "^6.26.0"
+		"react-router-dom": "^6.26.0",
+		"validator": "^13.12.0"
 	},
 	"devDependencies": {
 		"@types/react": "^18.3.3",
