@@ -7,6 +7,8 @@
 	"scripts": {
 		"dev": "vite --open",
 		"build": "vite build",
+		"predeploy": "npm run build",
+		"deploy": "npm run build && scp -r ./dist/* omidsangar@lovese.jumpingcrab.com:/home/omidsangar/frontend",
 		"lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview"
 	},
