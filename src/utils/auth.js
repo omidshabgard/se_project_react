@@ -9,7 +9,7 @@ export const checkToken = (token) => {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
-	}).then((res) =>  checkResponse(res));
+	}).then((res) => checkResponse(res));
 };
 
 // Function to handle user registration (POST /signup)
@@ -20,7 +20,7 @@ export const signup = (name, avatar, email, password) => {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({ name, avatar, email, password }),
-	}).then((res) =>  checkResponse(res));
+	}).then((res) => checkResponse(res));
 };
 
 // Function to handle user login (POST /signin)
@@ -31,7 +31,7 @@ export const signin = (email, password) => {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({ email, password }),
-	}).then((res) =>  checkResponse(res));
+	}).then((res) => checkResponse(res));
 };
 
 export const updateUser = async (name, avatar) => {
@@ -44,5 +44,5 @@ export const updateUser = async (name, avatar) => {
 			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify({ name, avatar }),
-	}).then((res) =>  checkResponse(res));
+	}).then((res) => checkResponse(res));
 };
