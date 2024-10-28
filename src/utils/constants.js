@@ -55,7 +55,6 @@ export const defaultWeatherOptions = {
 	day: {
 		url: new URL('../assets/day/default.png', import.meta.url).href,
 	},
-
 	night: {
 		url: new URL('../assets/night/default.png', import.meta.url).href,
 	},
@@ -107,8 +106,8 @@ export const coordinates = {
 
 export const APIkey = 'e2f4df9f704d5ba121f0146027e02177';
 
-// Updated BASE_URL
+// BASE_URL based on environment
 export const BASE_URL =
 	process.env.NODE_ENV === 'production'
-		? 'http://api.lovese.jumpingcrab.com'
+		? 'https://api.lovese.jumpingcrab.com'
 		: 'http://localhost:3001';
