@@ -5,7 +5,7 @@ import UpdateUserModal from "../UpdateUserModal";
 import { checkToken } from '../../utils/auth';
 import { useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'; 
-import { StateContext } from "../../contexts/StateContext,js";
+import { StateContext } from "../../contexts/StateContext.js";
 
 function SideBar({ handleLogout }) {
 

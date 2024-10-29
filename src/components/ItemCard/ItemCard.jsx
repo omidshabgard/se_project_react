@@ -5,7 +5,7 @@ import { likeItem, dislikeItem } from "../../utils/Api";
 import { useState, useEffect } from "react";
 import { useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import { StateContext } from "../../contexts/StateContext,js";
+import { StateContext } from "../../contexts/StateContext.js";
 
 function ItemCard({ item, onCardClick }) {
 

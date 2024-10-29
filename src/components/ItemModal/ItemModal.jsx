@@ -1,7 +1,7 @@
 import closeIcon from '../../assets/closeIcon.png';
 import './ItemModal.css';
 import { useContext } from 'react';
-import { StateContext } from '../../contexts/StateContext,js';
+import { StateContext } from '../../contexts/StateContext.js';
 
 function ItemModal({
   activeModal,

@@ -1,5 +1,7 @@
 import { checkResponse } from '../utils/Api';
 
+// import { BASE_URL } from './constants';
+
 const BASE_URL = 'http://localhost:3001';
 
 export const checkToken = (token) => {
@@ -12,7 +14,7 @@ export const checkToken = (token) => {
 	}).then((res) => checkResponse(res));
 };
 
-// Function to handle user registration (POST /signup)
+
 export const signup = (name, avatar, email, password) => {
 	return fetch(`${BASE_URL}/signup`, {
 		method: 'POST',
@@ -23,7 +25,6 @@ export const signup = (name, avatar, email, password) => {
 	}).then((res) => checkResponse(res));
 };
 
-// Function to handle user login (POST /signin)
 export const signin = (email, password) => {
 	return fetch(`${BASE_URL}/signin`, {
 		method: 'POST',

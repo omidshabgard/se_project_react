@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import { useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import { StateContext } from '../../contexts/StateContext,js';
+import { StateContext } from '../../contexts/StateContext.js';
 
 function Header({ handleAddClick, weatherData, setMobileView, mobileView, getItemList }) {
   
