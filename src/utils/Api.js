@@ -3,9 +3,8 @@ import { BASE_URL } from './constants';
 function checkResponse(res) {
 	if (res.ok) {
 		return res.json();
-	} else {
-		return Promise.reject(`Error ${res.status}`);
 	}
+	return Promise.reject(`Error ${res.status}: ${res.statusText}`);
 }
 
 function getItems() {
@@ -16,9 +15,15 @@ function getItems() {
 
 	return fetch(`${BASE_URL}/items`, {
 		headers: {
-			Authorization: `Bearer ${token}`, // Add token to headers
+			Authorization: `Bearer ${token}`,
+			'Content-Type': 'application/json',
 		},
-	}).then((res) => checkResponse(res));
+	})
+		.then(checkResponse)
+		.catch((error) => {
+			console.error('Failed to fetch items:', error);
+			return Promise.reject(error);
+		});
 }
 
 function postItems(generatedData) {
@@ -34,7 +39,12 @@ function postItems(generatedData) {
 			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify(generatedData),
-	}).then((res) => checkResponse(res));
+	})
+		.then(checkResponse)
+		.catch((error) => {
+			console.error('Failed to post item:', error);
+			return Promise.reject(error);
+		});
 }
 
 function deleteItem(id) {
@@ -43,14 +53,22 @@ function deleteItem(id) {
 		return Promise.reject('No token available');
 	}
 
-	if (id) {
-		return fetch(`${BASE_URL}/items/${id}`, {
-			method: 'DELETE',
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		}).then((res) => checkResponse(res));
+	if (!id) {
+		return Promise.reject('No item ID provided');
 	}
+
+	return fetch(`${BASE_URL}/items/${id}`, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${token}`,
+			'Content-Type': 'application/json',
+		},
+	})
+		.then(checkResponse)
+		.catch((error) => {
+			console.error('Failed to delete item:', error);
+			return Promise.reject(error);
+		});
 }
 
 function likeItem(itemId) {
@@ -63,8 +81,14 @@ function likeItem(itemId) {
 		method: 'PUT',
 		headers: {
 			Authorization: `Bearer ${token}`,
+			'Content-Type': 'application/json',
 		},
-	}).then((res) => checkResponse(res));
+	})
+		.then(checkResponse)
+		.catch((error) => {
+			console.error('Failed to like item:', error);
+			return Promise.reject(error);
+		});
 }
 
 function dislikeItem(itemId) {
@@ -77,8 +101,14 @@ function dislikeItem(itemId) {
 		method: 'DELETE',
 		headers: {
 			Authorization: `Bearer ${token}`,
+			'Content-Type': 'application/json',
 		},
-	}).then((res) => checkResponse(res));
+	})
+		.then(checkResponse)
+		.catch((error) => {
+			console.error('Failed to dislike item:', error);
+			return Promise.reject(error);
+		});
 }
 
 export {

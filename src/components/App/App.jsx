@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import './App.css';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -18,7 +18,6 @@ import RegisterModal from '../RegisterModal';
 import LoginModal from '../LoginModal';
 import ProtectedRoute from '../ProtectedRoute';
 import { checkToken, signup, signin } from '../../utils/auth';
-import { useCallback } from 'react';
 import { StateContext } from '../../contexts/StateContext.js';
 
 function App() {
@@ -75,10 +74,6 @@ function App() {
 			.catch(console.error);
 	}, []);
 
-	useEffect(() => {
-		getItemList();
-	}, []);
-
 	const getItemList = useCallback(() => {
 		getItems()
 			.then((data) => {
@@ -86,6 +81,10 @@ function App() {
 			})
 			.catch(() => console.log('Error'));
 	}, []);
+
+	useEffect(() => {
+		getItemList();
+	}, [getItemList]); // Including getItemList as a dependency
 
 	const handleSubButton = (subButtonValue) => {
 		if (subButtonValue === 'Login') {
@@ -135,8 +134,9 @@ function App() {
 			.then((addData) => {
 				if (e.imageUrl?.length && e.name?.length) {
 					setClothingItems((prevItems) => {
-						const data = [addData, ...prevItems];
-						return data.sort((a, b) => b._id - a._id);
+						return [addData, ...prevItems].sort(
+							(a, b) => b._id - a._id
+						);
 					});
 					closeActiveModal();
 				} else {
@@ -150,7 +150,7 @@ function App() {
 
 	const handleUserRegister = async ({ name, avatar, email, password }) => {
 		try {
-			const data = await signup(name, avatar, email, password);
+			await signup(name, avatar, email, password);
 			handleUserLogin({ email, password });
 			closeRegisterModal();
 			alert('Registration and login successful!');

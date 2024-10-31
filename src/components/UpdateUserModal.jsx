@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { updateUser } from '../utils/auth';
 import ModalWithForm from './ModalWithForm/ModalWithForm';
 
