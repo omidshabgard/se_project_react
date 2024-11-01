@@ -104,10 +104,12 @@ export const coordinates = {
 	longitude: -73.697861,
 };
 
-export const APIkey = 'e2f4df9f704d5ba121f0146027e02177';
+// Environment-specific API Key setup (optional but recommended for security)
+export const APIkey = window.location.hostname === 'localhost'
+	? 'YOUR_LOCAL_API_KEY'
+	: 'e2f4df9f704d5ba121f0146027e02177';
 
-// Hardcoded BASE_URL based on environment without .env file
-export const BASE_URL =
-	window.location.hostname === 'localhost'
-		? 'http://localhost:3001'
-		: 'https://api.lovese.jumpingcrab.com';
+// BASE_URL based on environment without .env file
+export const BASE_URL = window.location.hostname === 'localhost'
+	? 'http://localhost:3001'
+	: 'https://api.lovese.jumpingcrab.com';
