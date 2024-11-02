@@ -105,11 +105,10 @@ export const coordinates = {
 };
 
 // Environment-specific API Key setup (optional but recommended for security)
-export const APIkey = window.location.hostname === 'localhost'
-	? 'YOUR_LOCAL_API_KEY'
-	: 'e2f4df9f704d5ba121f0146027e02177';
+export const APIkey = 'e2f4df9f704d5ba121f0146027e02177';
 
 // BASE_URL based on environment without .env file
-export const BASE_URL = window.location.hostname === 'localhost'
-	? 'http://localhost:3001'
-	: 'https://api.lovese.jumpingcrab.com';
+export const BASE_URL =
+	process.env.NODE_ENV === 'production'
+		? 'https://api.lovese.jumpingcrab.com'
+		: 'http://localhost:3001';
