@@ -3,8 +3,8 @@ import './Footer.css';
 function Footer() {
 	return (
 		<footer className='footer'>
-			<p>Developed by Name Surname</p>
-			<p>2022</p>
+			<p>Developed by Omid Shabgard</p>
+			<p>2026</p>
 		</footer>
 	);
 }

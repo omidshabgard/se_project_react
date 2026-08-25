@@ -1,16 +1,30 @@
-.profile{
-    display: flex;
-    gap:116px
-}
-.profile__clothSection{
-    width: 1015px;
-}
-@media screen and (max-width: 627px) {
-    .profile{
-        flex-direction: column;
-    }
-    .profile__clothSection{
-        width: auto;
-    }
+.profile {
+	display: flex;
+	gap: 40px;
 
+	background-color: #e8f4fc;
+	border-radius: 20px;
+	padding: 20px;
+
+	min-height: 75vh;
+}
+
+.profile__sideBar {
+	flex-shrink: 0;
+}
+
+.profile__clothSection {
+	flex: 1;
+	min-width: 0;
+}
+
+@media screen and (max-width: 627px) {
+	.profile {
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.profile__clothSection {
+		width: auto;
+	}
 }

@@ -26,12 +26,14 @@ function App() {
 		temp: { F: 999, C: 0 },
 		city: '',
 	});
+
 	const [activeModal, setActiveModal] = useState('');
 	const [selectedCard, setSelectedCard] = useState({});
 	const [mobileView, setMobileView] = useState(false);
 	const [clothItems, setClothingItems] = useState([]);
 	const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState('F');
 	const [deleteCard, setDeleteCard] = useState(false);
+
 	const [formData, setFormData] = useState({
 		imageUrl: '',
 		name: '',
@@ -49,8 +51,10 @@ function App() {
 	const closeRegisterModal = () => setIsRegisterOpen(false);
 	const closeLoginModal = () => setIsLoginOpen(false);
 
+	// CHECK USER TOKEN WHEN APP LOADS
 	useEffect(() => {
 		const token = localStorage.getItem('token');
+
 		if (token) {
 			checkToken(token)
 				.then((userData) => {
@@ -65,6 +69,7 @@ function App() {
 		}
 	}, []);
 
+	// GET WEATHER DATA
 	useEffect(() => {
 		getWeather(coordinates, APIkey)
 			.then((data) => {
@@ -74,17 +79,21 @@ function App() {
 			.catch(console.error);
 	}, []);
 
+	// GET ALL CLOTHING ITEMS
 	const getItemList = useCallback(() => {
 		getItems()
 			.then((data) => {
 				setClothingItems(data);
 			})
-			.catch(() => console.log('Error'));
+			.catch((error) => {
+				console.error('Error getting clothing items:', error);
+			});
 	}, []);
 
+	// LOAD CLOTHING ITEMS WHEN APP STARTS
 	useEffect(() => {
 		getItemList();
-	}, [getItemList]); // Including getItemList as a dependency
+	}, [getItemList]);
 
 	const handleSubButton = (subButtonValue) => {
 		if (subButtonValue === 'Login') {
@@ -96,51 +105,79 @@ function App() {
 		}
 	};
 
+	// OPEN ITEM PREVIEW
 	const handleCardClick = (card) => {
 		setActiveModal('preview');
 		setSelectedCard(card);
 	};
 
+	// UPDATE ITEM AFTER LIKE OR DISLIKE
+	const handleLikeUpdate = (updatedItem) => {
+		setClothingItems((prevItems) =>
+			prevItems.map((item) =>
+				item._id === updatedItem._id ? updatedItem : item,
+			),
+		);
+	};
+
+	// OPEN ADD GARMENT MODAL
 	const handleAddClick = () => {
 		setActiveModal('add-garment');
-		setFormData({ imageUrl: '', name: '', weather: 'hot' });
+
+		setFormData({
+			imageUrl: '',
+			name: '',
+			weather: 'hot',
+		});
+
 		setMobileView(false);
 	};
 
+	// CLOSE ACTIVE MODAL
 	const closeActiveModal = () => {
 		setActiveModal('');
 		setDeleteCard(false);
 	};
 
+	// DELETE ITEM
 	const handleDeleteItem = (deleteID = '') => {
 		deleteItem(deleteID)
 			.then(() => {
 				setClothingItems((prevItems) =>
-					prevItems.filter((item) => item._id !== deleteID)
+					prevItems.filter((item) => item._id !== deleteID),
 				);
+
 				setDeleteCard(false);
 				closeActiveModal();
 			})
-			.catch(() => console.log('Error'));
+			.catch((error) => {
+				console.error('Delete item error:', error);
+			});
 	};
 
+	// CHANGE F / C
 	const handleToggleSwitchChange = () => {
-		if (currentTemperatureUnit === 'C') setCurrentTemperatureUnit('F');
-		if (currentTemperatureUnit === 'F') setCurrentTemperatureUnit('C');
+		if (currentTemperatureUnit === 'C') {
+			setCurrentTemperatureUnit('F');
+		}
+
+		if (currentTemperatureUnit === 'F') {
+			setCurrentTemperatureUnit('C');
+		}
 	};
 
+	// ADD NEW ITEM
 	const handleAddItem = (e) => {
 		postItems(e)
 			.then((addData) => {
 				if (e.imageUrl?.length && e.name?.length) {
 					setClothingItems((prevItems) => {
-						return [addData, ...prevItems].sort(
-							(a, b) => b._id - a._id
-						);
+						return [addData, ...prevItems];
 					});
+
 					closeActiveModal();
 				} else {
-					alert('Validation failed:', e);
+					console.error('Validation failed:', e);
 				}
 			})
 			.catch((error) => {
@@ -148,11 +185,18 @@ function App() {
 			});
 	};
 
+	// REGISTER USER
 	const handleUserRegister = async ({ name, avatar, email, password }) => {
 		try {
 			await signup(name, avatar, email, password);
-			handleUserLogin({ email, password });
+
+			await handleUserLogin({
+				email,
+				password,
+			});
+
 			closeRegisterModal();
+
 			alert('Registration and login successful!');
 		} catch (err) {
 			console.error('Registration error:', err);
@@ -160,25 +204,36 @@ function App() {
 		}
 	};
 
+	// LOGIN USER
 	const handleUserLogin = async ({ email, password }) => {
 		try {
 			const data = await signin(email, password);
+
 			localStorage.setItem('token', data.token);
+
 			const userData = await checkToken(data.token);
+
 			setCurrentUser(userData);
 			setIsLoggedIn(true);
-			getItemList();
+
+			await getItemList();
+
 			closeLoginModal();
+
+			navigate('/profile');
 		} catch (err) {
 			console.error('Login error:', err);
 			alert('Login failed. Please check your credentials.');
 		}
 	};
 
+	// LOGOUT USER
 	const handleLogout = () => {
 		localStorage.removeItem('token');
+
 		setCurrentUser(null);
 		setIsLoggedIn(false);
+
 		navigate('/');
 	};
 
@@ -191,7 +246,11 @@ function App() {
 				setIsLoginOpen,
 			}}
 		>
-			<CurrentUserContext.Provider value={{ currentUser }}>
+			<CurrentUserContext.Provider
+				value={{
+					currentUser,
+				}}
+			>
 				<CurrentTemperatureUnitContext.Provider
 					value={{
 						currentTemperatureUnit,
@@ -200,7 +259,12 @@ function App() {
 						clothItems,
 					}}
 				>
-					<ItemContext.Provider value={{ handleCardClick }}>
+					<ItemContext.Provider
+						value={{
+							handleCardClick,
+							handleLikeUpdate,
+						}}
+					>
 						<div className='page'>
 							<div className='page__content'>
 								<div>
@@ -215,6 +279,7 @@ function App() {
 										mobileView={mobileView}
 										setMobileView={setMobileView}
 									/>
+
 									<Routes>
 										<Route
 											path='/'
@@ -230,11 +295,13 @@ function App() {
 															src={reload}
 															alt='reload'
 														/>
+
 														<div>Randomize</div>
 													</button>
 												</Main>
 											}
 										/>
+
 										<Route
 											path='/profile'
 											element={
@@ -255,8 +322,10 @@ function App() {
 										/>
 									</Routes>
 								</div>
+
 								<Footer />
 							</div>
+
 							<AddItemModal
 								activeModal={activeModal}
 								closeActiveModal={closeActiveModal}
@@ -265,6 +334,7 @@ function App() {
 								formData={formData}
 								setFormData={setFormData}
 							/>
+
 							<ItemModal
 								activeModal={activeModal}
 								card={selectedCard}
@@ -273,6 +343,7 @@ function App() {
 								deleteCard={deleteCard}
 								handleDeleteCard={() => setDeleteCard(true)}
 							/>
+
 							{isRegisterOpen && (
 								<RegisterModal
 									isOpen={isRegisterOpen}

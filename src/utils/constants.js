@@ -108,5 +108,5 @@ export const coordinates = {
 export const APIkey = 'e2f4df9f704d5ba121f0146027e02177';
 
 // BASE_URL based on environment without .env file
-export const BASE_URL ='https://api.lovese.jumpingcrab.com'
-	
+// export const BASE_URL ='https://api.lovese.jumpingcrab.com'
+export const BASE_URL = 'http://localhost:3001';

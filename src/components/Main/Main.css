@@ -1,21 +1,30 @@
+.main {
+	background-color: #e8f5e9;
+	border-radius: 20px;
+	padding: 20px;
+	min-height: 75vh;
+}
+
 .cards__list {
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: center;
 	margin: 0;
 	padding: 0;
 	list-style: none;
 	gap: 20px;
 }
-.cards__text{
+
+.cards__text {
 	font-family: 'Cabinet Grotesk', sans-serif;
 	color: #000000;
 	font-size: 20px;
 	font-weight: 700;
 	margin: 40px 0 14px;
-
 }
+
 @media screen and (max-width: 627px) {
-	.cards__list{
+	.cards__list {
 		justify-content: center;
 	}
 }

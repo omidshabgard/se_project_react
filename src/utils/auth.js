@@ -1,5 +1,5 @@
 import { checkResponse } from '../utils/Api';
-import { BASE_URL } from './constants'; // Use the dynamic BASE_URL based on environment
+import { BASE_URL } from './constants';
 
 export const checkToken = (token) => {
 	return fetch(`${BASE_URL}/users/me`, {
@@ -17,7 +17,12 @@ export const signup = (name, avatar, email, password) => {
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ name, avatar, email, password }),
+		body: JSON.stringify({
+			name,
+			avatar,
+			email,
+			password,
+		}),
 	}).then(checkResponse);
 };
 
@@ -27,19 +32,29 @@ export const signin = (email, password) => {
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ email, password }),
+		body: JSON.stringify({
+			email,
+			password,
+		}),
 	}).then(checkResponse);
 };
 
 export const updateUser = async (name, avatar) => {
 	const token = localStorage.getItem('token');
 
-	return fetch(`${BASE_URL}/updateUser`, {
-		method: 'PUT',
+	if (!token) {
+		return Promise.reject('No token available');
+	}
+
+	return fetch(`${BASE_URL}/users/me`, {
+		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
-		body: JSON.stringify({ name, avatar }),
+		body: JSON.stringify({
+			name,
+			avatar,
+		}),
 	}).then(checkResponse);
 };

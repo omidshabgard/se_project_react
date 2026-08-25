@@ -4,21 +4,13 @@ function checkResponse(res) {
 	if (res.ok) {
 		return res.json();
 	}
+
 	return Promise.reject(`Error ${res.status}: ${res.statusText}`);
 }
 
+// Public: anyone can view clothing items
 function getItems() {
-	const token = localStorage.getItem('token');
-	if (!token) {
-		return Promise.reject('No token available');
-	}
-
-	return fetch(`${BASE_URL}/items`, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-			'Content-Type': 'application/json',
-		},
-	})
+	return fetch(`${BASE_URL}/items`)
 		.then(checkResponse)
 		.catch((error) => {
 			console.error('Failed to fetch items:', error);
@@ -26,8 +18,10 @@ function getItems() {
 		});
 }
 
+// Protected: user must be logged in to add an item
 function postItems(generatedData) {
 	const token = localStorage.getItem('token');
+
 	if (!token) {
 		return Promise.reject('No token available');
 	}
@@ -47,8 +41,10 @@ function postItems(generatedData) {
 		});
 }
 
+// Protected: user must be logged in to delete an item
 function deleteItem(id) {
 	const token = localStorage.getItem('token');
+
 	if (!token) {
 		return Promise.reject('No token available');
 	}
@@ -71,8 +67,10 @@ function deleteItem(id) {
 		});
 }
 
+// Protected: user must be logged in to like an item
 function likeItem(itemId) {
 	const token = localStorage.getItem('token');
+
 	if (!token) {
 		return Promise.reject('No token available');
 	}
@@ -91,8 +89,10 @@ function likeItem(itemId) {
 		});
 }
 
+// Protected: user must be logged in to remove a like
 function dislikeItem(itemId) {
 	const token = localStorage.getItem('token');
+
 	if (!token) {
 		return Promise.reject('No token available');
 	}

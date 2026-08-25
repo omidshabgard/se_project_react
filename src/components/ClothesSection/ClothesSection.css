@@ -1,15 +1,40 @@
-.cloth-header{
-    display: flex;
-    gap:20px
+.cloth-section {
+	width: 100%;
+	min-width: 0;
 }
-.cloth-item,.cloth-add-button {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    color: #000000;
-    font-size: 20px;
-    font-weight: 700;
+
+.cloth-header {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	margin-bottom: 24px;
 }
+
+.cloth-item,
 .cloth-add-button {
-    color: #00000099;
-    border: none;
-    background-color: transparent;
+	font-family: 'Cabinet Grotesk', sans-serif;
+	color: #000000;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.cloth-item {
+	margin: 0;
+}
+
+.cloth-add-button {
+	color: #00000099;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.profile-cards__list {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 24px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }

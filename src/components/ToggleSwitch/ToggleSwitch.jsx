@@ -4,7 +4,7 @@ import { CurrentTemperatureUnitContext } from '../../contexts/CurrentTemperature
 
 const ToggleSwitch = () => {
 	const { currentTemperatureUnit, handleToggleSwitchChange } = useContext(
-		CurrentTemperatureUnitContext
+		CurrentTemperatureUnitContext,
 	);
 
 	return (
@@ -12,8 +12,10 @@ const ToggleSwitch = () => {
 			<input
 				type='checkbox'
 				className='switch__box'
+				checked={currentTemperatureUnit === 'F'}
 				onChange={handleToggleSwitchChange}
 			/>
+
 			<span
 				className={
 					currentTemperatureUnit === 'F'
@@ -21,21 +23,24 @@ const ToggleSwitch = () => {
 						: 'switch__slider switch__slider-C'
 				}
 			></span>
-			<p
-				className={`switch__temp-F ${
-					currentTemperatureUnit === 'F' && 'switch__active'
-				}`}
-			>
-				F
-			</p>
+
 			<p
 				className={`switch__temp-C ${
-					currentTemperatureUnit === 'C' && 'switch__active'
+					currentTemperatureUnit === 'C' ? 'switch__active' : ''
 				}`}
 			>
 				C
 			</p>
+
+			<p
+				className={`switch__temp-F ${
+					currentTemperatureUnit === 'F' ? 'switch__active' : ''
+				}`}
+			>
+				F
+			</p>
 		</label>
 	);
 };
+
 export default ToggleSwitch;

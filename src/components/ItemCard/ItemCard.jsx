@@ -5,21 +5,24 @@ import { likeItem, dislikeItem } from '../../utils/Api';
 import { useState, useEffect, useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { StateContext } from '../../contexts/StateContext.js';
+import { ItemContext } from '../../contexts/ItemsContext';
 
 function ItemCard({ item, onCardClick }) {
 	const { currentUser } = useContext(CurrentUserContext);
 	const { isLoggedIn } = useContext(StateContext);
 
+	const { handleLikeUpdate } = useContext(ItemContext);
+
+	const [isLiked, setIsLiked] = useState(false);
+
 	const handleCardClick = () => {
 		onCardClick(item);
 	};
 
-	const [isLiked, setIsLiked] = useState(false);
-
 	useEffect(() => {
 		const userId = currentUser?._id;
 
-		if (item.likes.length > 0 && userId && item.likes.includes(userId)) {
+		if (item.likes?.length > 0 && userId && item.likes.includes(userId)) {
 			setIsLiked(true);
 		} else {
 			setIsLiked(false);
@@ -28,16 +31,19 @@ function ItemCard({ item, onCardClick }) {
 
 	const handleLikeClick = async () => {
 		try {
-			setIsLiked(!isLiked);
+			let updatedItem;
 
 			if (isLiked) {
-				await dislikeItem(item._id);
+				updatedItem = await dislikeItem(item._id);
 			} else {
-				await likeItem(item._id);
+				updatedItem = await likeItem(item._id);
 			}
+
+			// Update the shared clothing list immediately.
+			// Favorites can now react without a page refresh.
+			handleLikeUpdate(updatedItem);
 		} catch (error) {
 			console.error('Error liking/disliking the item:', error);
-			setIsLiked(isLiked);
 		}
 	};
 
@@ -45,13 +51,16 @@ function ItemCard({ item, onCardClick }) {
 		<li className='card'>
 			<div className='card__text'>
 				<h2 className='card__name'>{item.name}</h2>
+
 				{isLoggedIn && (
 					<img
 						className='like__icon'
 						src={isLiked ? likeIcon : dislikeIcon}
-						alt={isLiked ? 'like' : 'DisLike'}
+						alt={isLiked ? 'Liked' : 'Not liked'}
 						onClick={handleLikeClick}
-						style={{ cursor: 'pointer' }}
+						style={{
+							cursor: 'pointer',
+						}}
 					/>
 				)}
 			</div>
