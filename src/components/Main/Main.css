@@ -28,3 +28,12 @@
 		justify-content: center;
 	}
 }
+
+.main__cards-list .card {
+	width: 280px;
+}
+
+.main__cards-list .card__image {
+	max-width: 280px;
+	max-height: 280px;
+}

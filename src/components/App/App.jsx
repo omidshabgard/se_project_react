@@ -1,3 +1,4 @@
+import BrandBar from '../BrandBar/BrandBar';
 import { useEffect, useState, useCallback } from 'react';
 import './App.css';
 import Header from '../Header/Header';
@@ -19,6 +20,7 @@ import LoginModal from '../LoginModal';
 import ProtectedRoute from '../ProtectedRoute';
 import { checkToken, signup, signin } from '../../utils/auth';
 import { StateContext } from '../../contexts/StateContext.js';
+import BackToTop from '../BackToTop/BackToTop';
 
 function App() {
 	const [weatherData, setWeatherData] = useState({
@@ -51,7 +53,6 @@ function App() {
 	const closeRegisterModal = () => setIsRegisterOpen(false);
 	const closeLoginModal = () => setIsLoginOpen(false);
 
-	// CHECK USER TOKEN WHEN APP LOADS
 	useEffect(() => {
 		const token = localStorage.getItem('token');
 
@@ -69,7 +70,6 @@ function App() {
 		}
 	}, []);
 
-	// GET WEATHER DATA
 	useEffect(() => {
 		getWeather(coordinates, APIkey)
 			.then((data) => {
@@ -79,7 +79,6 @@ function App() {
 			.catch(console.error);
 	}, []);
 
-	// GET ALL CLOTHING ITEMS
 	const getItemList = useCallback(() => {
 		getItems()
 			.then((data) => {
@@ -90,7 +89,6 @@ function App() {
 			});
 	}, []);
 
-	// LOAD CLOTHING ITEMS WHEN APP STARTS
 	useEffect(() => {
 		getItemList();
 	}, [getItemList]);
@@ -105,13 +103,11 @@ function App() {
 		}
 	};
 
-	// OPEN ITEM PREVIEW
 	const handleCardClick = (card) => {
 		setActiveModal('preview');
 		setSelectedCard(card);
 	};
 
-	// UPDATE ITEM AFTER LIKE OR DISLIKE
 	const handleLikeUpdate = (updatedItem) => {
 		setClothingItems((prevItems) =>
 			prevItems.map((item) =>
@@ -120,7 +116,6 @@ function App() {
 		);
 	};
 
-	// OPEN ADD GARMENT MODAL
 	const handleAddClick = () => {
 		setActiveModal('add-garment');
 
@@ -133,13 +128,11 @@ function App() {
 		setMobileView(false);
 	};
 
-	// CLOSE ACTIVE MODAL
 	const closeActiveModal = () => {
 		setActiveModal('');
 		setDeleteCard(false);
 	};
 
-	// DELETE ITEM
 	const handleDeleteItem = (deleteID = '') => {
 		deleteItem(deleteID)
 			.then(() => {
@@ -155,7 +148,6 @@ function App() {
 			});
 	};
 
-	// CHANGE F / C
 	const handleToggleSwitchChange = () => {
 		if (currentTemperatureUnit === 'C') {
 			setCurrentTemperatureUnit('F');
@@ -166,18 +158,12 @@ function App() {
 		}
 	};
 
-	// ADD NEW ITEM
 	const handleAddItem = (e) => {
 		postItems(e)
 			.then((addData) => {
 				if (e.imageUrl?.length && e.name?.length) {
-					setClothingItems((prevItems) => {
-						return [addData, ...prevItems];
-					});
-
+					setClothingItems((prevItems) => [addData, ...prevItems]);
 					closeActiveModal();
-				} else {
-					console.error('Validation failed:', e);
 				}
 			})
 			.catch((error) => {
@@ -185,7 +171,6 @@ function App() {
 			});
 	};
 
-	// REGISTER USER
 	const handleUserRegister = async ({ name, avatar, email, password }) => {
 		try {
 			await signup(name, avatar, email, password);
@@ -196,7 +181,6 @@ function App() {
 			});
 
 			closeRegisterModal();
-
 			alert('Registration and login successful!');
 		} catch (err) {
 			console.error('Registration error:', err);
@@ -204,7 +188,6 @@ function App() {
 		}
 	};
 
-	// LOGIN USER
 	const handleUserLogin = async ({ email, password }) => {
 		try {
 			const data = await signin(email, password);
@@ -219,7 +202,6 @@ function App() {
 			await getItemList();
 
 			closeLoginModal();
-
 			navigate('/profile');
 		} catch (err) {
 			console.error('Login error:', err);
@@ -227,13 +209,10 @@ function App() {
 		}
 	};
 
-	// LOGOUT USER
 	const handleLogout = () => {
 		localStorage.removeItem('token');
-
 		setCurrentUser(null);
 		setIsLoggedIn(false);
-
 		navigate('/');
 	};
 
@@ -246,11 +225,7 @@ function App() {
 				setIsLoginOpen,
 			}}
 		>
-			<CurrentUserContext.Provider
-				value={{
-					currentUser,
-				}}
-			>
+			<CurrentUserContext.Provider value={{ currentUser }}>
 				<CurrentTemperatureUnitContext.Provider
 					value={{
 						currentTemperatureUnit,
@@ -279,6 +254,8 @@ function App() {
 										mobileView={mobileView}
 										setMobileView={setMobileView}
 									/>
+									<BackToTop />
+									<BrandBar />
 
 									<Routes>
 										<Route
@@ -295,7 +272,6 @@ function App() {
 															src={reload}
 															alt='reload'
 														/>
-
 														<div>Randomize</div>
 													</button>
 												</Main>
@@ -330,7 +306,7 @@ function App() {
 								activeModal={activeModal}
 								closeActiveModal={closeActiveModal}
 								isOpen={activeModal === 'add-garment'}
-								onAddItem={(val) => handleAddItem(val)}
+								onAddItem={handleAddItem}
 								formData={formData}
 								setFormData={setFormData}
 							/>
@@ -339,7 +315,7 @@ function App() {
 								activeModal={activeModal}
 								card={selectedCard}
 								onClose={closeActiveModal}
-								onDelete={(id) => handleDeleteItem(id)}
+								onDelete={handleDeleteItem}
 								deleteCard={deleteCard}
 								handleDeleteCard={() => setDeleteCard(true)}
 							/>

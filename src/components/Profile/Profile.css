@@ -11,6 +11,7 @@
 
 .profile__sideBar {
 	flex-shrink: 0;
+	width: 288px;
 }
 
 .profile__clothSection {
@@ -18,10 +19,20 @@
 	min-width: 0;
 }
 
+@media screen and (max-width: 900px) {
+	.profile {
+		gap: 24px;
+	}
+}
+
 @media screen and (max-width: 627px) {
 	.profile {
 		flex-direction: column;
 		gap: 24px;
+	}
+
+	.profile__sideBar {
+		width: 100%;
 	}
 
 	.profile__clothSection {
